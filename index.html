@@ -304,6 +304,58 @@
     gap: 0.3rem;
   }
 
+  /* Progress bar */
+  .progress-track {
+    width: min(80vw, 420px);
+    height: 4px;
+    background: var(--text-dim);
+    border: 1px solid var(--text-dim);
+    border-radius: 4px;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    position: relative;
+  }
+  .progress-track.visible {
+    opacity: 0.6;
+  }
+  .progress-track.overtime-bar {
+    opacity: 0.8;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent));
+    transform-origin: left center;
+    transition: transform 0.4s ease, background 0.3s ease;
+    position: relative;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow), 0 0 16px var(--accent-glow);
+    transition: background 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    opacity: 1;
+  }
+  .progress-track.overtime-bar .progress-fill {
+    background: linear-gradient(90deg, var(--danger), var(--danger));
+  }
+  .progress-track.overtime-bar .progress-fill::after {
+    background: var(--danger);
+    box-shadow: 0 0 8px var(--danger-glow), 0 0 16px var(--danger-glow);
+  }
+  /* Hide dot when bar is empty */
+  .progress-fill.empty::after {
+    opacity: 0;
+  }
+
   .overtime-label {
     font-size: 0.8rem;
     font-weight: 600;
@@ -486,13 +538,39 @@
     pointer-events: none;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 300;
-    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
   }
   .toast.show {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
   }
   .toast.warning { border-color: var(--accent); color: var(--accent); }
+  .toast-text { white-space: nowrap; }
+  .toast-test {
+    white-space: nowrap;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 600;
+    opacity: 0.85;
+    transition: opacity 0.15s ease;
+  }
+  .toast-test:hover { opacity: 1; }
+  .toast-close {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    padding: 0 0 0 0.2rem;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+    font-family: inherit;
+  }
+  .toast-close:hover { opacity: 1; }
 
   /* Recent timers */
   .recents {
@@ -852,6 +930,11 @@
     <div class="time-display" id="display">05:00</div>
   </div>
 
+  <!-- Progress bar -->
+  <div class="progress-track" id="progressTrack">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
   <!-- Quick adjust (paused timer) -->
   <div class="adjust-buttons hidden" id="adjustButtons">
     <button class="adjust-btn negative" onclick="adjustRemaining(-300)">-5m</button>
@@ -1185,6 +1268,10 @@ function updateUI() {
   const showSetter = mode === 'timer' && (state === 'idle' || state === 'paused');
   timeSetter.classList.toggle('hidden', !showSetter);
   adjustButtons.classList.toggle('hidden', !(state === 'paused' && mode === 'timer'));
+
+  // Hide mode toggle when running
+  document.querySelector('.mode-toggle').classList.toggle('hidden', state !== 'idle');
+
   renderRecents();
 
   // Update setter values
@@ -1228,6 +1315,7 @@ function updateUI() {
   overtimeLabel.textContent = state === 'overtime' ? 'OVERTIME' : '';
   document.body.classList.toggle('overtime-flash', state === 'overtime');
 
+  updateProgressRing(elapsed);
   updatePipCanvas();
   updateLocalClock();
 }
@@ -1255,6 +1343,7 @@ function startPause() {
     btnStartPause.textContent = 'Resume';
     btnStartPause.className = 'btn-start';
     document.body.classList.remove('overtime-flash');
+    dismissAlarm();
   } else if (state === 'paused') {
     runStartTime = Date.now();
     state = pausedElapsed >= totalSeconds && mode === 'timer' ? 'overtime' : 'running';
@@ -1296,12 +1385,33 @@ function resetTimer() {
 
 // --- Toast ---
 let toastTimer = null;
-function showToast(msg, type) {
+function showToast(msg, type, options) {
   const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.className = 'toast show' + (type === 'warning' ? ' warning' : '');
+  toast.innerHTML = '';
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { toast.className = 'toast'; }, 3500);
+
+  const textSpan = document.createElement('span');
+  textSpan.className = 'toast-text';
+  textSpan.textContent = msg;
+  toast.appendChild(textSpan);
+
+  if (options && options.testSound) {
+    const testLink = document.createElement('span');
+    testLink.className = 'toast-test';
+    testLink.textContent = 'Click to test';
+    testLink.onclick = (e) => { e.stopPropagation(); playChime(); };
+    toast.appendChild(testLink);
+  }
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'toast-close';
+  closeBtn.innerHTML = '&times;';
+  closeBtn.onclick = () => { toast.className = 'toast'; };
+  toast.appendChild(closeBtn);
+
+  const duration = (options && options.duration) || 3500;
+  toast.className = 'toast show' + (type === 'warning' ? ' warning' : '');
+  toastTimer = setTimeout(() => { toast.className = 'toast'; }, duration);
 }
 
 // --- Sound mode selector ---
@@ -1343,6 +1453,9 @@ function setSoundMode(mode) {
   soundMode = mode;
   localStorage.setItem('timerSoundMode', mode);
   updateSoundSelector();
+  if (mode !== 'off') {
+    showToast('Make sure your device volume is on', 'warning', { testSound: true, duration: 7000 });
+  }
 }
 
 function updateSoundSelector() {
@@ -1566,6 +1679,33 @@ function updatePipCanvas() {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(text, w / 2, h / 2 + (state === 'overtime' ? 10 : 0));
+}
+
+// --- Progress bar ---
+const progressTrack = document.getElementById('progressTrack');
+const progressFill = document.getElementById('progressFill');
+
+function updateProgressRing(elapsed) {
+  const isActive = state === 'running' || state === 'paused' || state === 'overtime';
+
+  const isRunning = state === 'running' || state === 'overtime';
+  if (mode !== 'timer' || !isRunning || totalSeconds <= 0) {
+    progressTrack.classList.remove('visible', 'overtime-bar');
+    return;
+  }
+
+  progressTrack.classList.add('visible');
+  progressTrack.classList.toggle('overtime-bar', state === 'overtime');
+
+  let fraction;
+  if (state === 'overtime') {
+    fraction = 0;
+  } else {
+    fraction = Math.max(0, (totalSeconds - elapsed) / totalSeconds);
+  }
+
+  progressFill.style.transform = `scaleX(${fraction})`;
+  progressFill.classList.toggle('empty', fraction === 0);
 }
 
 // --- Keyboard ---
