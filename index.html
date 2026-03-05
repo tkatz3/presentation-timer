@@ -534,6 +534,197 @@
   }
   .recent-chip:active { transform: scale(0.95); }
 
+  /* Help modal */
+  .help-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+  .help-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.75rem 2rem 1.5rem;
+    max-width: 420px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+    transform: translateY(12px) scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+  .modal-overlay.open .modal {
+    transform: translateY(0) scale(1);
+  }
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.15s ease;
+    font-family: inherit;
+  }
+  .modal-close:hover { color: var(--text); border-color: var(--accent); }
+  .modal h2 {
+    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+  .modal section {
+    margin-bottom: 0.85rem;
+  }
+  .modal section h3 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+  .modal section p {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+  .modal .kbd {
+    display: inline-block;
+    font-family: 'Fredoka', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0.1rem 0.45rem;
+    border-radius: 5px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  /* Sound selector (3-option segmented) */
+  .sound-selector {
+    display: flex;
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 2px;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .sound-option {
+    padding: 0.3rem 0.5rem;
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .sound-option:hover { color: var(--text); }
+  .sound-option.active {
+    background: var(--accent);
+    color: #09090b;
+    font-weight: 600;
+  }
+
+  /* Alarm dismiss button */
+  .alarm-popup {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    z-index: 400;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .alarm-popup.show {
+    transform: translateX(-50%) scale(1);
+  }
+  .alarm-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--danger);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 24px var(--danger-glow), 0 0 0 0 var(--danger-glow);
+    animation: alarmRing 0.4s ease-in-out infinite alternate, alarmGlow 1.2s ease-in-out infinite;
+  }
+  .alarm-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  @keyframes alarmRing {
+    0% { transform: rotate(-8deg); }
+    100% { transform: rotate(8deg); }
+  }
+  @keyframes alarmGlow {
+    0%, 100% { box-shadow: 0 4px 24px var(--danger-glow), 0 0 0 0 var(--danger-glow); }
+    50% { box-shadow: 0 4px 24px var(--danger-glow), 0 0 0 12px transparent; }
+  }
+  .alarm-label {
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--danger);
+    letter-spacing: 0.03em;
+  }
+
   /* Utilities */
   .hidden { display: none !important; }
   #pipCanvas { position: fixed; left: -9999px; top: -9999px; }
@@ -558,6 +749,7 @@
     <button id="btnStopwatch" onclick="setMode('stopwatch')">Stopwatch</button>
   </div>
   <div class="settings-area" style="display:flex;gap:0.4rem;">
+    <button class="help-btn" onclick="toggleHelp()" aria-label="Help">?</button>
     <button class="settings-btn" onclick="toggleFullscreen()" aria-label="Fullscreen" id="btnFullscreen">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="fsIcon">
         <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
@@ -584,11 +776,12 @@
         </label>
       </div>
       <div class="setting-row">
-        <span>Sound When Done</span>
-        <label class="toggle-switch">
-          <input type="checkbox" id="toggleSound" onchange="toggleSoundAlert()">
-          <span class="toggle-slider"></span>
-        </label>
+        <span>Sound</span>
+        <div class="sound-selector" id="soundSelector">
+          <button class="sound-option active" data-mode="off" onclick="setSoundMode('off')">Off</button>
+          <button class="sound-option" data-mode="single" onclick="setSoundMode('single')">Chime</button>
+          <button class="sound-option" data-mode="continuous" onclick="setSoundMode('continuous')">Alarm</button>
+        </div>
       </div>
       <div class="setting-row">
         <span>Show Clock</span>
@@ -693,6 +886,50 @@
 </div>
 
 
+<!-- Help modal -->
+<div class="modal-overlay" id="helpModal" onclick="if(event.target===this)toggleHelp()">
+  <div class="modal">
+    <button class="modal-close" onclick="toggleHelp()">&times;</button>
+    <h2>Presentation Timer</h2>
+    <section>
+      <h3>Countdown & Stopwatch</h3>
+      <p>Use the top toggle to switch between Countdown and Stopwatch modes. Set your time using the arrow buttons or click the numbers to type directly. Recently used timers appear as quick-start chips.</p>
+    </section>
+    <section>
+      <h3>Keep Screen On</h3>
+      <p>Prevents your display from sleeping while you're on this page &mdash; enabled by default (green dot = active). <strong>Important:</strong> this only works while you're on this tab. If you switch to another tab or app, the screen can still sleep. To keep your screen on while multitasking, make sure the floating mini-player is open (see below).</p>
+    </section>
+    <section>
+      <h3>Floating Mini-Player</h3>
+      <p>Opens a small floating window showing your timer that stays on top of other apps. By default, it auto-opens when you switch away from this tab and closes when you come back. You can also open it manually from the bottom bar. While the mini-player is visible, your screen will stay on even if you're in another app.</p>
+    </section>
+    <section>
+      <h3>Overtime</h3>
+      <p>When a countdown reaches zero, the screen flashes and the timer automatically switches to counting overtime (shown in red with a + prefix). Pause at any time to adjust.</p>
+    </section>
+    <section>
+      <h3>Sound Alerts</h3>
+      <p>Choose from three options in Settings: <strong>Off</strong>, <strong>Chime</strong> (a gentle tone plays once when time is up), or <strong>Alarm</strong> (the same chime repeats every few seconds until you dismiss it by clicking the red banner).</p>
+    </section>
+    <section>
+      <h3>Keyboard Shortcuts</h3>
+      <p><span class="kbd">Space</span> Start / Pause &nbsp; <span class="kbd">R</span> Reset &nbsp; <span class="kbd">Esc</span> Exit fullscreen</p>
+    </section>
+    <section>
+      <h3>Offline</h3>
+      <p>This timer works entirely in your browser with no server required. All features (timing, sound, wake lock, PiP) use local browser APIs and will continue working if your internet disconnects.</p>
+    </section>
+  </div>
+</div>
+
+<!-- Alarm dismiss popup -->
+<div class="alarm-popup" id="alarmBanner" onclick="dismissAlarm()">
+  <div class="alarm-icon">
+    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><line x1="12" y1="2" x2="12" y2="0.5"/><line x1="4.5" y1="3.5" x2="3" y2="2"/><line x1="19.5" y1="3.5" x2="21" y2="2"/></svg>
+  </div>
+  <span class="alarm-label">Click to silence</span>
+</div>
+
 <div class="toast" id="toast"></div>
 <canvas id="pipCanvas" width="480" height="240"></canvas>
 <video id="pipVideo" autopictureinpicture muted playsinline style="display:none"></video>
@@ -708,7 +945,8 @@ let intervalId = null;
 let wakeLock = null;
 let autoPip = true;
 let pipActive = false;
-let soundEnabled = false;
+let soundMode = 'off'; // 'off' | 'single' | 'continuous'
+let alarmInterval = null;
 let showClock = true;
 
 // --- Elements ---
@@ -980,6 +1218,13 @@ function updateUI() {
   else if (state === 'overtime') display.classList.add('overtime');
   else if (state === 'paused') display.classList.add('paused');
 
+  // Hide BMC widget when active
+  const bmcWidget = document.getElementById('bmc-wbtn');
+  if (bmcWidget) {
+    bmcWidget.style.opacity = (state === 'idle') ? '' : '0';
+    bmcWidget.style.pointerEvents = (state === 'idle') ? '' : 'none';
+  }
+
   overtimeLabel.textContent = state === 'overtime' ? 'OVERTIME' : '';
   document.body.classList.toggle('overtime-flash', state === 'overtime');
 
@@ -1044,6 +1289,7 @@ function resetTimer() {
   btnStartPause.textContent = 'Start';
   btnStartPause.className = 'btn-start';
   document.body.classList.remove('overtime-flash');
+  dismissAlarm();
   stopPipVideo();
   updateUI();
 }
@@ -1058,10 +1304,9 @@ function showToast(msg, type) {
   toastTimer = setTimeout(() => { toast.className = 'toast'; }, 3500);
 }
 
-// --- Sound toggle ---
-function toggleSoundAlert() {
-  const el = document.getElementById('toggleSound');
-  if (el.checked) {
+// --- Sound mode selector ---
+function setSoundMode(mode) {
+  if (mode !== 'off') {
     // Test if audio works
     try {
       const ctx = new AudioContext();
@@ -1074,37 +1319,42 @@ function toggleSoundAlert() {
           gain.gain.value = 0.01;
           osc.start();
           osc.stop(ctx.currentTime + 0.05);
-          soundEnabled = true;
-          localStorage.setItem('timerSoundEnabled', 'true');
+          soundMode = mode;
+          localStorage.setItem('timerSoundMode', mode);
+          updateSoundSelector();
         }).catch(() => {
-          el.checked = false;
-          soundEnabled = false;
-          localStorage.setItem('timerSoundEnabled', 'false');
+          soundMode = 'off';
+          localStorage.setItem('timerSoundMode', 'off');
+          updateSoundSelector();
           showToast('Browser is blocking audio. Click the page first, then try again.', 'warning');
         });
-      } else {
-        soundEnabled = true;
-        localStorage.setItem('timerSoundEnabled', 'true');
+        ctx.close();
+        return;
       }
       ctx.close();
     } catch (e) {
-      el.checked = false;
-      soundEnabled = false;
-      localStorage.setItem('timerSoundEnabled', 'false');
+      soundMode = 'off';
+      localStorage.setItem('timerSoundMode', 'off');
+      updateSoundSelector();
       showToast('Audio is not available. Check your browser or system sound settings.', 'warning');
+      return;
     }
-  } else {
-    soundEnabled = false;
-    localStorage.setItem('timerSoundEnabled', 'false');
   }
+  soundMode = mode;
+  localStorage.setItem('timerSoundMode', mode);
+  updateSoundSelector();
 }
 
-// --- Alarm (gentle chime) ---
-function playAlarm() {
-  if (!soundEnabled) return;
+function updateSoundSelector() {
+  document.querySelectorAll('.sound-option').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.mode === soundMode);
+  });
+}
+
+// --- Alarm ---
+function playChime() {
   try {
     const ctx = new AudioContext();
-    // Gentle two-tone chime (soft marimba-like)
     const notes = [523.25, 659.25, 783.99, 659.25]; // C5, E5, G5, E5
     notes.forEach((freq, i) => {
       const osc = ctx.createOscillator();
@@ -1121,6 +1371,51 @@ function playAlarm() {
       osc.stop(t + 0.4);
     });
   } catch (e) {}
+}
+
+function playContinuousAlarm() {
+  try {
+    function chimeOnce() {
+      const ctx = new AudioContext();
+      const notes = [523.25, 659.25, 783.99, 659.25];
+      notes.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = freq;
+        osc.type = 'sine';
+        const t = ctx.currentTime + i * 0.3;
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.12, t + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+        osc.start(t);
+        osc.stop(t + 0.4);
+      });
+    }
+    chimeOnce();
+    alarmInterval = setInterval(chimeOnce, 2500);
+    document.getElementById('alarmBanner').classList.add('show');
+  } catch (e) {}
+}
+
+function dismissAlarm() {
+  if (alarmInterval) {
+    clearInterval(alarmInterval);
+    alarmInterval = null;
+  }
+  document.getElementById('alarmBanner').classList.remove('show');
+}
+
+function playAlarm() {
+  if (soundMode === 'off') return;
+  if (soundMode === 'single') playChime();
+  if (soundMode === 'continuous') playContinuousAlarm();
+}
+
+// --- Help modal ---
+function toggleHelp() {
+  document.getElementById('helpModal').classList.toggle('open');
 }
 
 // --- Manual PiP ---
@@ -1285,9 +1580,10 @@ updateUI();
 acquireWakeLock();
 
 // Restore sound preference
-if (localStorage.getItem('timerSoundEnabled') === 'true') {
-  soundEnabled = true;
-  document.getElementById('toggleSound').checked = true;
+const savedSoundMode = localStorage.getItem('timerSoundMode');
+if (savedSoundMode && ['off', 'single', 'continuous'].includes(savedSoundMode)) {
+  soundMode = savedSoundMode;
+  updateSoundSelector();
 }
 
 // Restore clock preference
@@ -1296,5 +1592,6 @@ if (localStorage.getItem('timerShowClock') === 'false') {
   document.getElementById('toggleClock').checked = false;
 }
 </script>
+<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="tzvi" data-description="Support me on Buy me a coffee!" data-message="If this helped you out, consider fueling the site with a coffee!" data-color="#FF5F5F" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
 </body>
 </html>
