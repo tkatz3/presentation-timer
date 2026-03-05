@@ -51,7 +51,7 @@
   }
 
   body {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -86,7 +86,7 @@
   }
   .mode-toggle button {
     padding: 0.55rem 1.5rem;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
     font-size: 0.82rem;
     font-weight: 500;
     letter-spacing: 0.02em;
@@ -241,7 +241,7 @@
   .time-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 
   .time-value {
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
     font-size: 1.7rem;
     font-weight: 600;
     font-variant-numeric: tabular-nums;
@@ -258,7 +258,7 @@
     background: var(--surface-hover);
   }
   .time-value-input {
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
     font-size: 1.7rem;
     font-weight: 600;
     font-variant-numeric: tabular-nums;
@@ -287,7 +287,7 @@
     letter-spacing: 0.12em;
   }
   .time-sep {
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
     font-size: 1.5rem;
     font-weight: 500;
     color: var(--border);
@@ -316,7 +316,7 @@
   }
 
   .time-display {
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
     font-size: clamp(4rem, 15vw, 10rem);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
@@ -356,7 +356,7 @@
   }
   .adjust-btn {
     padding: 0.55rem 1rem;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
     font-size: 0.85rem;
     font-weight: 500;
     letter-spacing: 0.01em;
@@ -382,7 +382,7 @@
     gap: 0.75rem;
   }
   .controls button {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
     padding: 0.75rem 2.5rem;
     font-size: 0.95rem;
     font-weight: 600;
@@ -419,7 +419,7 @@
     display: flex;
     align-items: center;
     gap: 7px;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
     font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.02em;
@@ -456,6 +456,17 @@
   }
   .status-dot.active { background: var(--success); box-shadow: 0 0 6px var(--success); }
   .status-dot.inactive { background: var(--border); }
+
+  /* Local clock */
+  .local-clock {
+    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+    text-align: center;
+    opacity: 0.7;
+  }
 
   /* Toast notification */
   .toast {
@@ -506,7 +517,7 @@
   }
   .recent-chip {
     padding: 0.3rem 0.7rem;
-    font-family: 'Fredoka', sans-serif;
+    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
     font-size: 0.85rem;
     font-weight: 500;
     border-radius: 8px;
@@ -546,7 +557,12 @@
     <button id="btnTimer" class="active" onclick="setMode('timer')">Countdown</button>
     <button id="btnStopwatch" onclick="setMode('stopwatch')">Stopwatch</button>
   </div>
-  <div class="settings-area">
+  <div class="settings-area" style="display:flex;gap:0.4rem;">
+    <button class="settings-btn" onclick="toggleFullscreen()" aria-label="Fullscreen" id="btnFullscreen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="fsIcon">
+        <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+      </svg>
+    </button>
     <button class="settings-btn" onclick="toggleSettings()" aria-label="Settings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
@@ -571,6 +587,13 @@
         <span>Sound When Done</span>
         <label class="toggle-switch">
           <input type="checkbox" id="toggleSound" onchange="toggleSoundAlert()">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="setting-row">
+        <span>Show Clock</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggleClock" checked onchange="toggleLocalClock()">
           <span class="toggle-slider"></span>
         </label>
       </div>
@@ -651,6 +674,8 @@
     <button class="btn-start" id="btnStartPause" onclick="startPause()">Start</button>
     <button class="btn-secondary" id="btnReset" onclick="resetTimer()">Reset</button>
   </div>
+
+  <div class="local-clock hidden" id="localClock"></div>
 </div>
 
 <!-- Bottom bar -->
@@ -684,6 +709,7 @@ let wakeLock = null;
 let autoPip = true;
 let pipActive = false;
 let soundEnabled = false;
+let showClock = true;
 
 // --- Elements ---
 const display = document.getElementById('display');
@@ -776,6 +802,50 @@ document.addEventListener('click', e => {
 });
 function toggleDarkLight() {
   document.body.classList.toggle('light', document.getElementById('toggleTheme').checked);
+}
+
+// --- Fullscreen ---
+function toggleFullscreen() {
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else {
+    document.documentElement.requestFullscreen().catch(() => {});
+  }
+}
+// Update icon when fullscreen changes (also handles Esc key automatically)
+document.addEventListener('fullscreenchange', () => {
+  const icon = document.getElementById('fsIcon');
+  if (document.fullscreenElement) {
+    // Show minimize/exit icon
+    icon.innerHTML = '<polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/>';
+  } else {
+    // Show expand icon
+    icon.innerHTML = '<polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>';
+  }
+});
+
+// --- Local clock ---
+function toggleLocalClock() {
+  showClock = document.getElementById('toggleClock').checked;
+  localStorage.setItem('timerShowClock', showClock ? 'true' : 'false');
+  updateLocalClock();
+}
+
+function updateLocalClock() {
+  const el = document.getElementById('localClock');
+  const isActive = state === 'running' || state === 'overtime' || state === 'paused';
+  if (!showClock || !isActive) {
+    el.classList.add('hidden');
+    return;
+  }
+  el.classList.remove('hidden');
+  const now = new Date();
+  let h = now.getHours();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  const m = String(now.getMinutes()).padStart(2, '0');
+  const s = String(now.getSeconds()).padStart(2, '0');
+  el.textContent = `${h}:${m}:${s} ${ampm}`;
 }
 
 // --- Mode ---
@@ -914,6 +984,7 @@ function updateUI() {
   document.body.classList.toggle('overtime-flash', state === 'overtime');
 
   updatePipCanvas();
+  updateLocalClock();
 }
 
 // --- Start / Pause ---
@@ -1217,6 +1288,12 @@ acquireWakeLock();
 if (localStorage.getItem('timerSoundEnabled') === 'true') {
   soundEnabled = true;
   document.getElementById('toggleSound').checked = true;
+}
+
+// Restore clock preference
+if (localStorage.getItem('timerShowClock') === 'false') {
+  showClock = false;
+  document.getElementById('toggleClock').checked = false;
 }
 </script>
 </body>
