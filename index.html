@@ -2189,5 +2189,34 @@ if (savedTheme && ['dark', 'light', 'sky', 'pride', 'dprk'].includes(savedTheme)
 }
 </script>
 <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="tzvi" data-description="Support me on Buy me a coffee!" data-message="If this helped you out, consider fueling the site with a coffee!" data-color="#FF5F5F" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+<script>
+// Add close button to BMC widget popup
+(function addBmcClose() {
+  const obs = new MutationObserver(() => {
+    const popup = document.querySelector('#bmc-wbtn .bmc-btn-text-container');
+    if (popup && !popup.querySelector('.bmc-close')) {
+      const btn = document.createElement('span');
+      btn.className = 'bmc-close';
+      btn.innerHTML = '&times;';
+      Object.assign(btn.style, {
+        position: 'absolute', top: '4px', right: '8px',
+        cursor: 'pointer', fontSize: '18px', lineHeight: '1',
+        color: '#888', fontFamily: 'sans-serif', zIndex: '9999'
+      });
+      btn.onmouseenter = () => btn.style.color = '#333';
+      btn.onmouseleave = () => btn.style.color = '#888';
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        popup.style.display = 'none';
+      };
+      popup.style.position = 'relative';
+      popup.appendChild(btn);
+    }
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+  // Stop observing after 15s to save resources
+  setTimeout(() => obs.disconnect(), 15000);
+})();
+</script>
 </body>
 </html>
