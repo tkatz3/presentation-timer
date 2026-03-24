@@ -225,7 +225,7 @@
     overflow: hidden;
   }
   .mode-toggle button {
-    padding: 0.55rem 1.5rem;
+    padding: 0.55rem 1.1rem;
     font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
     font-size: 0.82rem;
     font-weight: 500;
@@ -927,70 +927,15 @@
     gap: 0.4rem;
   }
 
-  /* Multi-part timer: main screen button */
-  .add-part-btn {
-    padding: 0.35rem 0.9rem;
-    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
-    font-size: 0.78rem;
-    font-weight: 500;
-    border-radius: 8px;
-    border: 1px dashed var(--border);
-    background: transparent;
-    color: var(--text-dim);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    white-space: nowrap;
-  }
-  .add-part-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    border-style: solid;
-  }
-  .add-part-btn:active { transform: scale(0.96); }
-
-  /* Multi-part timer: editor overlay */
-  .parts-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    z-index: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-  }
-  .parts-overlay.open {
-    opacity: 1;
-    pointer-events: auto;
-  }
+  /* Multi-part timer: inline editor (shown as main content in multi mode) */
   .parts-editor {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 1.75rem 2rem 1.5rem;
-    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    animation: fadeSlideIn 0.25s ease;
     width: 100%;
-    max-height: 85vh;
-    overflow-y: auto;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.4);
-    transform: translateY(12px) scale(0.96);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-  }
-  .parts-overlay.open .parts-editor {
-    transform: translateY(0) scale(1);
-  }
-  .parts-editor h2 {
-    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 1.25rem;
-    color: var(--text);
+    max-width: 700px;
   }
   .parts-flow {
     display: flex;
@@ -1020,7 +965,7 @@
   .part-card-name {
     width: 100%;
     font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.82rem;
     font-weight: 500;
     text-align: center;
     background: transparent;
@@ -1169,22 +1114,11 @@
   }
   .part-add-card:active { transform: scale(0.95); }
 
-  .parts-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 1rem;
-    gap: 1rem;
-  }
   .parts-total-label {
-    font-size: 0.75rem;
+    font-size: 0.82rem;
     font-weight: 500;
     color: var(--text-dim);
     font-variant-numeric: tabular-nums;
-  }
-  .parts-done-btn {
-    padding: 0.6rem 2rem;
-    font-size: 0.9rem;
   }
 
   /* Multi-part timer: running info */
@@ -1192,66 +1126,66 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.15rem;
+    gap: 0.3rem;
     animation: fadeSlideIn 0.3s ease;
   }
   .part-name-label {
-    font-size: 0.72rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--text-dim);
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
   .parts-dots-row {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
   }
   .parts-dots {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
   }
   .part-dot {
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    border: 1.5px solid var(--text-dim);
+    border: 2px solid var(--text-dim);
     background: transparent;
     transition: all 0.3s ease;
   }
   .part-dot.done {
     background: var(--accent);
     border-color: var(--accent);
-    box-shadow: 0 0 4px var(--accent-glow);
+    box-shadow: 0 0 6px var(--accent-glow);
   }
   .part-dot.current {
     background: var(--accent);
     border-color: var(--accent);
-    box-shadow: 0 0 6px var(--accent-glow);
+    box-shadow: 0 0 8px var(--accent-glow);
     animation: dotPulse 1.5s ease-in-out infinite;
   }
   @keyframes dotPulse {
     0%, 100% { box-shadow: 0 0 4px var(--accent-glow); }
-    50% { box-shadow: 0 0 10px var(--accent-glow), 0 0 16px var(--accent-glow); }
+    50% { box-shadow: 0 0 12px var(--accent-glow), 0 0 20px var(--accent-glow); }
   }
   .parts-label-text {
-    font-size: 0.62rem;
+    font-size: 0.82rem;
     font-weight: 500;
     color: var(--text-dim);
-    opacity: 0.7;
+    opacity: 0.8;
     white-space: nowrap;
   }
   .parts-remaining {
     font-family: 'Outfit', system-ui, sans-serif;
-    font-size: 0.68rem;
+    font-size: 0.88rem;
     font-weight: 500;
     font-variant-numeric: tabular-nums;
     color: var(--text-dim);
-    opacity: 0.7;
+    opacity: 0.8;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
   }
   .parts-remaining .sep {
     opacity: 0.4;
@@ -1332,6 +1266,7 @@
   <div class="mode-toggle">
     <button id="btnTimer" class="active" onclick="setMode('timer')">Timer</button>
     <button id="btnStopwatch" onclick="setMode('stopwatch')">Stopwatch</button>
+    <button id="btnMulti" onclick="setMode('multi')">Multi-Part</button>
   </div>
   <div class="settings-area" style="display:flex;gap:0.4rem;">
     <button class="help-btn" onclick="toggleHelp()" aria-label="Help">?</button>
@@ -1428,8 +1363,11 @@
     </div>
   </div>
 
-  <!-- Multi-part -->
-  <button class="add-part-btn hidden" id="addPartBtn" onclick="openPartsEditor()">+ Add Part</button>
+  <!-- Multi-part editor (shown inline when mode=multi and idle) -->
+  <div class="parts-editor hidden" id="partsEditor">
+    <div class="parts-flow" id="partsFlow"></div>
+    <span class="parts-total-label" id="partsTotalLabel"></span>
+  </div>
 
   <!-- Recent timers -->
   <div class="recents hidden" id="recents">
@@ -1526,19 +1464,6 @@
   </div>
 </div>
 
-<!-- Multi-part editor -->
-<div class="parts-overlay" id="partsOverlay" onclick="if(event.target===this)closePartsEditor()">
-  <div class="parts-editor">
-    <button class="modal-close" onclick="closePartsEditor()">&times;</button>
-    <h2>Multi-Part Timer</h2>
-    <div class="parts-flow" id="partsFlow"></div>
-    <div class="parts-footer">
-      <span class="parts-total-label" id="partsTotalLabel"></span>
-      <button class="btn-start parts-done-btn" onclick="closePartsEditor()">Done</button>
-    </div>
-  </div>
-</div>
-
 <!-- Alarm dismiss popup -->
 <div class="alarm-popup" id="alarmBanner" onclick="dismissAlarm()">
   <div class="alarm-icon">
@@ -1568,7 +1493,7 @@ let showClock = true;
 let currentTheme = 'dark';
 let segments = []; // array of {seconds: N} — empty = single-timer mode
 let currentSegmentIndex = 0;
-let selectedSegmentIndex = 0;
+
 
 // --- Elements ---
 const display = document.getElementById('display');
@@ -1719,12 +1644,19 @@ function updateLocalClock() {
 // --- Mode ---
 function setMode(m) {
   if (state !== 'idle') resetTimer();
-  segments = [];
-  selectedSegmentIndex = 0;
-  currentSegmentIndex = 0;
+  if (m !== 'multi') {
+    segments = [];
+    selectedSegmentIndex = 0;
+    currentSegmentIndex = 0;
+  }
   mode = m;
   document.getElementById('btnTimer').classList.toggle('active', m === 'timer');
   document.getElementById('btnStopwatch').classList.toggle('active', m === 'stopwatch');
+  document.getElementById('btnMulti').classList.toggle('active', m === 'multi');
+  if (m === 'multi' && segments.length === 0) {
+    segments.push({ seconds: 300, name: '', ring: true });
+    segments.push({ seconds: 300, name: '', ring: true });
+  }
   updateUI();
 }
 
@@ -1737,7 +1669,7 @@ function adjustUnit(unit, delta) {
     if (unit === 'm') setM = Math.max(0, Math.min(59, setM + delta));
     if (unit === 's') setS = Math.max(0, Math.min(59, setS + delta));
     totalSeconds = setH * 3600 + setM * 60 + setS;
-    if (segments.length > 1) segments[0].seconds = totalSeconds;
+
   } else if (state === 'paused' && mode === 'timer') {
     let remaining = totalSeconds - pausedElapsed;
     if (unit === 'h') remaining += delta * 3600;
@@ -1780,7 +1712,7 @@ function editTimeValue(unit, el) {
       if (unit === 'm') setM = val;
       if (unit === 's') setS = val;
       totalSeconds = setH * 3600 + setM * 60 + setS;
-      if (segments.length > 1) segments[0].seconds = totalSeconds;
+  
     } else if (state === 'paused') {
       const rem = Math.max(0, totalSeconds - pausedElapsed);
       const rh = Math.floor(rem / 3600);
@@ -1817,9 +1749,16 @@ function updateUI() {
   const elapsed = getElapsed();
 
   // Time setter visibility
-  const showSetter = mode === 'timer' && (state === 'idle' || state === 'paused');
+  const isTimerMode = mode === 'timer' || mode === 'multi';
+  const showSetter = isTimerMode && (state === 'idle' || state === 'paused') && !(mode === 'multi' && state === 'idle');
   timeSetter.classList.toggle('hidden', !showSetter);
-  adjustButtons.classList.toggle('hidden', !(state === 'paused' && mode === 'timer'));
+  adjustButtons.classList.toggle('hidden', !(state === 'paused' && isTimerMode));
+
+  // Parts editor (inline, shown in multi mode idle)
+  const partsEditor = document.getElementById('partsEditor');
+  const showPartsEditor = mode === 'multi' && state === 'idle';
+  partsEditor.classList.toggle('hidden', !showPartsEditor);
+  if (showPartsEditor) renderPartsFlow();
 
   // Hide mode toggle when running
   document.querySelector('.mode-toggle').classList.toggle('hidden', state !== 'idle');
@@ -1839,9 +1778,10 @@ function updateUI() {
   }
 
   // Display
-  if (mode === 'timer') {
+  if (mode === 'timer' || mode === 'multi') {
     if (state === 'idle') {
-      display.textContent = formatTime(totalSeconds);
+      const displayTotal = mode === 'multi' ? segments.reduce((s, seg) => s + seg.seconds, 0) : totalSeconds;
+      display.textContent = formatTime(displayTotal);
     } else if (state === 'overtime') {
       display.textContent = '+' + formatTime(elapsed - totalSeconds);
     } else {
@@ -1870,16 +1810,8 @@ function updateUI() {
   // Multi-part info (running state)
   updatePartsInfo();
 
-  // Add Part button (idle state)
-  const addPartBtn = document.getElementById('addPartBtn');
-  const showPartBtn = mode === 'timer' && state === 'idle';
-  addPartBtn.classList.toggle('hidden', !showPartBtn);
-  if (showPartBtn) {
-    addPartBtn.textContent = segments.length > 1
-      ? `Edit Parts (${segments.length})`
-      : '+ Add Part';
-    addPartBtn.style.borderStyle = segments.length > 1 ? 'solid' : 'dashed';
-  }
+  // Hide recents in multi mode
+  if (mode === 'multi') recentsEl.classList.add('hidden');
 
   updateProgressRing(elapsed);
   updatePipCanvas();
@@ -1889,17 +1821,13 @@ function updateUI() {
 // --- Start / Pause ---
 function startPause() {
   if (state === 'idle') {
-    if (mode === 'timer') {
-      // Sync current setter to segments if active
-      if (segments.length > 1) {
-        segments[0].seconds = setH * 3600 + setM * 60 + setS;
-        currentSegmentIndex = 0;
-        totalSeconds = segments[0].seconds;
-        if (segments.reduce((s, seg) => s + seg.seconds, 0) <= 0) return;
-      } else {
-        totalSeconds = setH * 3600 + setM * 60 + setS;
-        if (totalSeconds <= 0) return;
-      }
+    if (mode === 'multi') {
+      currentSegmentIndex = 0;
+      totalSeconds = segments[0].seconds;
+      if (segments.reduce((s, seg) => s + seg.seconds, 0) <= 0) return;
+    } else if (mode === 'timer') {
+      totalSeconds = setH * 3600 + setM * 60 + setS;
+      if (totalSeconds <= 0) return;
       saveRecent(totalSeconds);
     }
     pausedElapsed = 0;
@@ -1920,7 +1848,7 @@ function startPause() {
     dismissAlarm();
   } else if (state === 'paused') {
     runStartTime = Date.now();
-    state = pausedElapsed >= totalSeconds && mode === 'timer' ? 'overtime' : 'running';
+    state = pausedElapsed >= totalSeconds && (mode === 'timer' || mode === 'multi') ? 'overtime' : 'running';
     intervalId = setInterval(tick, 250);
     btnStartPause.textContent = 'Pause';
     btnStartPause.className = 'btn-secondary';
@@ -1931,7 +1859,7 @@ function startPause() {
 // --- Tick ---
 function tick() {
   const elapsed = getElapsed();
-  if (mode === 'timer' && state === 'running' && elapsed >= totalSeconds) {
+  if ((mode === 'timer' || mode === 'multi') && state === 'running' && elapsed >= totalSeconds) {
     // Check if there are more segments to advance to
     if (segments.length > 1 && currentSegmentIndex < segments.length - 1) {
       // Ring for completed part if enabled
@@ -1958,18 +1886,12 @@ function resetTimer() {
   runStartTime = 0;
   currentSegmentIndex = 0;
   if (mode === 'timer') {
-    if (segments.length > 1) {
-      // Restore first segment into setter
-      selectedSegmentIndex = 0;
-      const s = segments[0].seconds;
-      setH = Math.floor(s / 3600);
-      setM = Math.floor((s % 3600) / 60);
-      setS = s % 60;
-      totalSeconds = s;
-    } else {
-      setH = 0; setM = 0; setS = 0;
-      totalSeconds = 0;
-    }
+    setH = 0; setM = 0; setS = 0;
+    totalSeconds = 0;
+  } else if (mode === 'multi') {
+    // Keep segments, reset to first part
+    currentSegmentIndex = 0;
+    if (segments.length > 0) totalSeconds = segments[0].seconds;
   }
   btnStartPause.textContent = 'Start';
   btnStartPause.className = 'btn-start';
@@ -2011,40 +1933,6 @@ function showToast(msg, type, options) {
 }
 
 // --- Multi-Part Timer ---
-function openPartsEditor() {
-  if (state !== 'idle' || mode !== 'timer') return;
-  if (segments.length === 0) {
-    const secs = setH * 3600 + setM * 60 + setS;
-    segments.push({ seconds: secs || 300, name: '', ring: true });
-    segments.push({ seconds: 300, name: '', ring: true });
-  }
-  renderPartsFlow();
-  document.getElementById('partsOverlay').classList.add('open');
-}
-
-function closePartsEditor() {
-  document.getElementById('partsOverlay').classList.remove('open');
-  if (segments.length <= 1) {
-    if (segments.length === 1) {
-      const s = segments[0].seconds;
-      setH = Math.floor(s / 3600);
-      setM = Math.floor((s % 3600) / 60);
-      setS = s % 60;
-      totalSeconds = s;
-    }
-    segments = [];
-  } else {
-    // Sync first part to main setter
-    const s = segments[0].seconds;
-    setH = Math.floor(s / 3600);
-    setM = Math.floor((s % 3600) / 60);
-    setS = s % 60;
-    totalSeconds = s;
-  }
-  selectedSegmentIndex = 0;
-  updateUI();
-}
-
 function addPart() {
   segments.push({ seconds: 300, name: '', ring: true });
   renderPartsFlow();
@@ -2054,11 +1942,8 @@ function addPart() {
 }
 
 function removePart(index) {
+  if (segments.length <= 2) return; // minimum 2 parts
   segments.splice(index, 1);
-  if (segments.length <= 1) {
-    closePartsEditor();
-    return;
-  }
   renderPartsFlow();
 }
 
@@ -2495,7 +2380,7 @@ function updateProgressRing(elapsed) {
   const isActive = state === 'running' || state === 'paused' || state === 'overtime';
 
   const isRunning = state === 'running' || state === 'overtime';
-  if (mode !== 'timer' || !isRunning || totalSeconds <= 0) {
+  if ((mode !== 'timer' && mode !== 'multi') || !isRunning || totalSeconds <= 0) {
     progressTrack.classList.remove('visible', 'overtime-bar');
     return;
   }
