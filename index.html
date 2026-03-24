@@ -50,6 +50,63 @@
     --pip-text: #1a1820;
     --pip-danger: #dc2626;
   }
+  body.sky {
+    --bg: #87CEEB;
+    --surface: rgba(255, 255, 255, 0.85);
+    --surface-hover: rgba(255, 255, 255, 0.95);
+    --border: rgba(255, 255, 255, 0.45);
+    --text: #1a3a5c;
+    --text-dim: #4a6a8a;
+    --accent: #e6a42c;
+    --accent-dim: rgba(230, 164, 44, 0.12);
+    --accent-glow: rgba(230, 164, 44, 0.25);
+    --danger: #dc2626;
+    --danger-dim: rgba(220, 38, 38, 0.08);
+    --danger-glow: rgba(220, 38, 38, 0.2);
+    --success: #16a34a;
+    --flash-bg: #fef2f2;
+    --pip-bg: #87CEEB;
+    --pip-text: #1a3a5c;
+    --pip-danger: #dc2626;
+  }
+  body.pride {
+    --bg: #ff69b4;
+    --surface: rgba(255, 255, 255, 0.9);
+    --surface-hover: rgba(255, 255, 255, 0.95);
+    --border: rgba(255, 255, 255, 0.5);
+    --text: #2d1b3d;
+    --text-dim: #5a4069;
+    --accent: #c07a18;
+    --accent-dim: rgba(192, 122, 24, 0.1);
+    --accent-glow: rgba(192, 122, 24, 0.2);
+    --danger: #dc2626;
+    --danger-dim: rgba(220, 38, 38, 0.08);
+    --danger-glow: rgba(220, 38, 38, 0.2);
+    --success: #16a34a;
+    --flash-bg: #fef2f2;
+    --pip-bg: #ff69b4;
+    --pip-text: #2d1b3d;
+    --pip-danger: #dc2626;
+  }
+  body.dprk {
+    --bg: #cc0000;
+    --surface: rgba(139, 0, 0, 0.6);
+    --surface-hover: rgba(160, 0, 0, 0.7);
+    --border: rgba(255, 200, 50, 0.3);
+    --text: #FFD700;
+    --text-dim: rgba(255, 215, 0, 0.65);
+    --accent: #FFD700;
+    --accent-dim: rgba(255, 215, 0, 0.12);
+    --accent-glow: rgba(255, 215, 0, 0.25);
+    --danger: #FFFFFF;
+    --danger-dim: rgba(255, 255, 255, 0.1);
+    --danger-glow: rgba(255, 255, 255, 0.3);
+    --success: #FFD700;
+    --flash-bg: #8b0000;
+    --pip-bg: #cc0000;
+    --pip-text: #FFD700;
+    --pip-danger: #FFFFFF;
+  }
 
   body {
     font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
@@ -69,6 +126,88 @@
     0%, 100% { background: var(--bg); }
     50% { background: var(--flash-bg); }
   }
+
+  /* ---- Theme backgrounds ---- */
+  body.sky {
+    background: linear-gradient(180deg, #4A90D9 0%, #87CEEB 40%, #B0E0E6 100%);
+  }
+  body.sky::before,
+  body.sky::after {
+    content: '';
+    position: fixed;
+    z-index: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+  }
+  body.sky::before {
+    width: 300px;
+    height: 90px;
+    top: 15%;
+    left: -100px;
+    box-shadow: 60px -20px 0 10px rgba(255,255,255,0.8), 120px 0 0 20px rgba(255,255,255,0.7), 180px -10px 0 5px rgba(255,255,255,0.8);
+    animation: cloudDrift 25s linear infinite;
+  }
+  body.sky::after {
+    width: 250px;
+    height: 70px;
+    top: 55%;
+    left: -150px;
+    box-shadow: 50px -15px 0 8px rgba(255,255,255,0.7), 100px 5px 0 15px rgba(255,255,255,0.6), 150px -5px 0 10px rgba(255,255,255,0.7);
+    animation: cloudDrift 35s linear infinite;
+    animation-delay: -10s;
+  }
+  @keyframes cloudDrift {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(100vw + 400px)); }
+  }
+
+  body.pride {
+    background: linear-gradient(
+      135deg,
+      #FF0018 0%, #FF0018 14.28%,
+      #FFA52C 14.28%, #FFA52C 28.57%,
+      #FFFF41 28.57%, #FFFF41 42.85%,
+      #008018 42.85%, #008018 57.14%,
+      #0000F9 57.14%, #0000F9 71.42%,
+      #86007D 71.42%, #86007D 100%
+    );
+  }
+
+  body.dprk {
+    background: radial-gradient(ellipse at center, #dd1111 0%, #8b0000 70%, #5c0000 100%);
+  }
+  body.dprk::before {
+    content: '\2605';
+    position: fixed;
+    top: 6%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: rgba(255, 215, 0, 0.15);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body.dprk::after {
+    content: 'LIVE\ALAUGH\ALOVE';
+    white-space: pre-line;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 900;
+    color: rgba(255, 215, 0, 0.08);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-align: center;
+    line-height: 1.3;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body.sky > *, body.dprk > * { position: relative; z-index: 1; }
 
   /* ---- Top bar ---- */
   .topbar {
@@ -133,7 +272,7 @@
     flex-direction: column;
     gap: 0;
     z-index: 200;
-    min-width: 230px;
+    min-width: 260px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.35);
     opacity: 0;
     transform: translateY(-6px) scale(0.97);
@@ -751,6 +890,154 @@
     font-weight: 600;
   }
 
+  /* Theme selector (5-option grid) */
+  .theme-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 2px;
+    gap: 2px;
+    flex-shrink: 0;
+    min-width: 160px;
+  }
+  .theme-option {
+    padding: 0.25rem 0.35rem;
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.62rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .theme-option:hover { color: var(--text); }
+  .theme-option.active {
+    background: var(--accent);
+    color: #09090b;
+    font-weight: 600;
+  }
+  .setting-row.theme-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+  }
+
+  /* Segments */
+  .segments-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeSlideIn 0.25s ease;
+  }
+  .segment-chip {
+    position: relative;
+    padding: 0.25rem 0.6rem;
+    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .segment-chip:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+  .segment-chip.active {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    color: var(--text);
+  }
+  .segment-chip .seg-num {
+    font-weight: 600;
+    color: var(--accent);
+    margin-right: 0.2rem;
+  }
+  .segment-chip.active .seg-num {
+    color: var(--accent);
+  }
+  .seg-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    margin-left: 0.25rem;
+    border: none;
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-family: inherit;
+    border-radius: 50%;
+    transition: all 0.15s ease;
+    opacity: 0.5;
+    vertical-align: middle;
+  }
+  .seg-remove:hover {
+    opacity: 1;
+    color: var(--danger);
+    background: var(--danger-dim);
+  }
+  .segment-add {
+    padding: 0.25rem 0.6rem;
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    border-radius: 8px;
+    border: 1px dashed var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .segment-add:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .segment-add:active { transform: scale(0.95); }
+  .segments-total {
+    font-size: 0.58rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+    text-align: center;
+    margin-top: -0.25rem;
+  }
+  .section-indicator {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+  }
+  .section-indicator.pulse {
+    animation: sectionPulse 0.6s ease;
+  }
+  @keyframes sectionPulse {
+    0% { transform: scale(1); color: var(--text-dim); }
+    50% { transform: scale(1.15); color: var(--accent); }
+    100% { transform: scale(1); color: var(--text-dim); }
+  }
+
   /* Alarm dismiss button */
   .alarm-popup {
     position: fixed;
@@ -869,12 +1156,15 @@
           <span class="toggle-slider"></span>
         </label>
       </div>
-      <div class="setting-row">
-        <span>Light Mode</span>
-        <label class="toggle-switch">
-          <input type="checkbox" id="toggleTheme" onchange="toggleDarkLight()">
-          <span class="toggle-slider"></span>
-        </label>
+      <div class="setting-row theme-row">
+        <span>Theme</span>
+        <div class="theme-selector" id="themeSelector">
+          <button class="theme-option active" data-theme="dark" onclick="setTheme('dark')">Dark</button>
+          <button class="theme-option" data-theme="light" onclick="setTheme('light')">Light</button>
+          <button class="theme-option" data-theme="sky" onclick="setTheme('sky')">Sky</button>
+          <button class="theme-option" data-theme="pride" onclick="setTheme('pride')">Pride</button>
+          <button class="theme-option" data-theme="dprk" onclick="setTheme('dprk')">DPRK</button>
+        </div>
       </div>
     </div>
   </div>
@@ -919,6 +1209,13 @@
     </div>
   </div>
 
+  <!-- Segments -->
+  <div class="segments-bar hidden" id="segmentsBar"></div>
+  <div class="segments-total hidden" id="segmentsTotal"></div>
+  <div id="segmentAddRow">
+    <button class="segment-add hidden" id="segmentAddBtn" onclick="addSegment()">+ Add Section</button>
+  </div>
+
   <!-- Recent timers -->
   <div class="recents hidden" id="recents">
     <span class="recents-label">Recent</span>
@@ -927,6 +1224,7 @@
 
   <!-- Display -->
   <div class="display-area">
+    <div class="section-indicator hidden" id="sectionIndicator"></div>
     <div class="overtime-label" id="overtimeLabel"></div>
     <div class="time-display" id="display">05:00</div>
   </div>
@@ -1032,6 +1330,10 @@ let pipActive = false;
 let soundMode = 'off'; // 'off' | 'single' | 'continuous'
 let alarmInterval = null;
 let showClock = true;
+let currentTheme = 'dark';
+let segments = []; // array of {seconds: N} — empty = single-timer mode
+let currentSegmentIndex = 0;
+let selectedSegmentIndex = 0;
 
 // --- Elements ---
 const display = document.getElementById('display');
@@ -1122,8 +1424,17 @@ document.addEventListener('click', e => {
     settingsPanel.classList.remove('open');
   }
 });
-function toggleDarkLight() {
-  document.body.classList.toggle('light', document.getElementById('toggleTheme').checked);
+function setTheme(theme) {
+  document.body.classList.remove('light', 'sky', 'pride', 'dprk');
+  if (theme !== 'dark') document.body.classList.add(theme);
+  currentTheme = theme;
+  localStorage.setItem('timerTheme', theme);
+  updateThemeSelector();
+}
+function updateThemeSelector() {
+  document.querySelectorAll('.theme-option').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.theme === currentTheme);
+  });
 }
 
 // --- Fullscreen ---
@@ -1173,6 +1484,9 @@ function updateLocalClock() {
 // --- Mode ---
 function setMode(m) {
   if (state !== 'idle') resetTimer();
+  segments = [];
+  selectedSegmentIndex = 0;
+  currentSegmentIndex = 0;
   mode = m;
   document.getElementById('btnTimer').classList.toggle('active', m === 'timer');
   document.getElementById('btnStopwatch').classList.toggle('active', m === 'stopwatch');
@@ -1188,6 +1502,7 @@ function adjustUnit(unit, delta) {
     if (unit === 'm') setM = Math.max(0, Math.min(59, setM + delta));
     if (unit === 's') setS = Math.max(0, Math.min(59, setS + delta));
     totalSeconds = setH * 3600 + setM * 60 + setS;
+    if (segments.length > 1) segments[selectedSegmentIndex].seconds = totalSeconds;
   } else if (state === 'paused' && mode === 'timer') {
     let remaining = totalSeconds - pausedElapsed;
     if (unit === 'h') remaining += delta * 3600;
@@ -1230,6 +1545,7 @@ function editTimeValue(unit, el) {
       if (unit === 'm') setM = val;
       if (unit === 's') setS = val;
       totalSeconds = setH * 3600 + setM * 60 + setS;
+      if (segments.length > 1) segments[selectedSegmentIndex].seconds = totalSeconds;
     } else if (state === 'paused') {
       const rem = Math.max(0, totalSeconds - pausedElapsed);
       const rh = Math.floor(rem / 3600);
@@ -1316,6 +1632,32 @@ function updateUI() {
   overtimeLabel.textContent = state === 'overtime' ? 'OVERTIME' : '';
   document.body.classList.toggle('overtime-flash', state === 'overtime');
 
+  // Section indicator
+  const sectionInd = document.getElementById('sectionIndicator');
+  const hasSegments = segments.length > 1;
+  const isActive = state === 'running' || state === 'overtime' || state === 'paused';
+  if (hasSegments && isActive) {
+    sectionInd.classList.remove('hidden');
+    sectionInd.textContent = `Section ${currentSegmentIndex + 1} of ${segments.length}`;
+  } else {
+    sectionInd.classList.add('hidden');
+  }
+
+  // Segments bar + add button
+  const segBar = document.getElementById('segmentsBar');
+  const segTotal = document.getElementById('segmentsTotal');
+  const segAddBtn = document.getElementById('segmentAddBtn');
+  const showSegments = mode === 'timer' && state === 'idle';
+  segAddBtn.classList.toggle('hidden', !showSegments);
+  if (showSegments && hasSegments) {
+    segBar.classList.remove('hidden');
+    segTotal.classList.remove('hidden');
+    renderSegments();
+  } else {
+    segBar.classList.add('hidden');
+    segTotal.classList.add('hidden');
+  }
+
   updateProgressRing(elapsed);
   updatePipCanvas();
   updateLocalClock();
@@ -1325,8 +1667,16 @@ function updateUI() {
 function startPause() {
   if (state === 'idle') {
     if (mode === 'timer') {
-      totalSeconds = setH * 3600 + setM * 60 + setS;
-      if (totalSeconds <= 0) return;
+      // Sync current setter to segments if active
+      if (segments.length > 1) {
+        segments[selectedSegmentIndex].seconds = setH * 3600 + setM * 60 + setS;
+        currentSegmentIndex = 0;
+        totalSeconds = segments[0].seconds;
+        if (segments.reduce((s, seg) => s + seg.seconds, 0) <= 0) return;
+      } else {
+        totalSeconds = setH * 3600 + setM * 60 + setS;
+        if (totalSeconds <= 0) return;
+      }
       saveRecent(totalSeconds);
     }
     pausedElapsed = 0;
@@ -1359,8 +1709,22 @@ function startPause() {
 function tick() {
   const elapsed = getElapsed();
   if (mode === 'timer' && state === 'running' && elapsed >= totalSeconds) {
-    state = 'overtime';
-    playAlarm();
+    // Check if there are more segments to advance to
+    if (segments.length > 1 && currentSegmentIndex < segments.length - 1) {
+      // Advance to next segment
+      pausedElapsed = 0;
+      runStartTime = Date.now();
+      currentSegmentIndex++;
+      totalSeconds = segments[currentSegmentIndex].seconds;
+      // Pulse the section indicator
+      const ind = document.getElementById('sectionIndicator');
+      ind.classList.remove('pulse');
+      void ind.offsetWidth; // force reflow
+      ind.classList.add('pulse');
+    } else {
+      state = 'overtime';
+      playAlarm();
+    }
   }
   updateUI();
 }
@@ -1372,9 +1736,20 @@ function resetTimer() {
   state = 'idle';
   pausedElapsed = 0;
   runStartTime = 0;
+  currentSegmentIndex = 0;
   if (mode === 'timer') {
-    setH = 0; setM = 0; setS = 0;
-    totalSeconds = 0;
+    if (segments.length > 1) {
+      // Restore first segment into setter
+      selectedSegmentIndex = 0;
+      const s = segments[0].seconds;
+      setH = Math.floor(s / 3600);
+      setM = Math.floor((s % 3600) / 60);
+      setS = s % 60;
+      totalSeconds = s;
+    } else {
+      setH = 0; setM = 0; setS = 0;
+      totalSeconds = 0;
+    }
   }
   btnStartPause.textContent = 'Start';
   btnStartPause.className = 'btn-start';
@@ -1413,6 +1788,80 @@ function showToast(msg, type, options) {
   const duration = (options && options.duration) || 3500;
   toast.className = 'toast show' + (type === 'warning' ? ' warning' : '');
   toastTimer = setTimeout(() => { toast.className = 'toast'; }, duration);
+}
+
+// --- Segments ---
+function addSegment() {
+  if (state !== 'idle' || mode !== 'timer') return;
+  if (segments.length === 0) {
+    // Initialize first segment from current time setter
+    const secs = setH * 3600 + setM * 60 + setS;
+    segments.push({ seconds: secs || 300 });
+  }
+  segments.push({ seconds: 300 });
+  selectedSegmentIndex = segments.length - 1;
+  loadSegmentIntoSetter(selectedSegmentIndex);
+  updateUI();
+}
+
+function removeSegment(index) {
+  if (state !== 'idle') return;
+  segments.splice(index, 1);
+  if (segments.length <= 1) {
+    // Collapse back to single-timer mode
+    if (segments.length === 1) {
+      const s = segments[0].seconds;
+      setH = Math.floor(s / 3600);
+      setM = Math.floor((s % 3600) / 60);
+      setS = s % 60;
+      totalSeconds = s;
+    }
+    segments = [];
+    selectedSegmentIndex = 0;
+  } else {
+    if (selectedSegmentIndex >= segments.length) selectedSegmentIndex = segments.length - 1;
+    loadSegmentIntoSetter(selectedSegmentIndex);
+  }
+  updateUI();
+}
+
+function selectSegment(index) {
+  if (state !== 'idle') return;
+  // Save current setter values to previously selected segment
+  if (segments.length > 1) {
+    segments[selectedSegmentIndex].seconds = setH * 3600 + setM * 60 + setS;
+  }
+  selectedSegmentIndex = index;
+  loadSegmentIntoSetter(index);
+  updateUI();
+}
+
+function loadSegmentIntoSetter(index) {
+  const s = segments[index].seconds;
+  setH = Math.floor(s / 3600);
+  setM = Math.floor((s % 3600) / 60);
+  setS = s % 60;
+  totalSeconds = s;
+}
+
+function renderSegments() {
+  const bar = document.getElementById('segmentsBar');
+  bar.innerHTML = '';
+  segments.forEach((seg, i) => {
+    const chip = document.createElement('button');
+    chip.className = 'segment-chip' + (i === selectedSegmentIndex ? ' active' : '');
+    chip.innerHTML = `<span class="seg-num">${i + 1}</span>${formatTime(seg.seconds)}`;
+    chip.onclick = () => selectSegment(i);
+    const rm = document.createElement('button');
+    rm.className = 'seg-remove';
+    rm.innerHTML = '&times;';
+    rm.onclick = (e) => { e.stopPropagation(); removeSegment(i); };
+    chip.appendChild(rm);
+    bar.appendChild(chip);
+  });
+  // Total
+  const total = segments.reduce((s, seg) => s + seg.seconds, 0);
+  document.getElementById('segmentsTotal').textContent = `Total: ${formatTime(total)}`;
 }
 
 // --- Sound mode selector ---
@@ -1642,13 +2091,13 @@ function updatePipCanvas() {
   const w = pipCanvas.width;
   const h = pipCanvas.height;
   const elapsed = getElapsed();
-  const isLight = document.body.classList.contains('light');
+  const cs = getComputedStyle(document.body);
 
-  const bg = isLight ? '#f7f5f2' : '#09090b';
-  const dangerBg = isLight ? '#fef2f2' : '#1c0a0a';
-  const textColor = isLight ? '#1a1820' : '#ededef';
-  const dimColor = isLight ? '#8a8780' : '#7c7c86';
-  const dangerColor = isLight ? '#dc2626' : '#ef4444';
+  const bg = cs.getPropertyValue('--pip-bg').trim() || '#09090b';
+  const dangerBg = cs.getPropertyValue('--flash-bg').trim() || '#1c0a0a';
+  const textColor = cs.getPropertyValue('--pip-text').trim() || '#ededef';
+  const dimColor = cs.getPropertyValue('--text-dim').trim() || '#7c7c86';
+  const dangerColor = cs.getPropertyValue('--pip-danger').trim() || '#ef4444';
 
   ctx.fillStyle = state === 'overtime' ? dangerBg : bg;
   ctx.fillRect(0, 0, w, h);
@@ -1731,6 +2180,12 @@ if (savedSoundMode && ['off', 'single', 'continuous'].includes(savedSoundMode)) 
 if (localStorage.getItem('timerShowClock') === 'false') {
   showClock = false;
   document.getElementById('toggleClock').checked = false;
+}
+
+// Restore theme preference
+const savedTheme = localStorage.getItem('timerTheme');
+if (savedTheme && ['dark', 'light', 'sky', 'pride', 'dprk'].includes(savedTheme)) {
+  setTheme(savedTheme);
 }
 </script>
 <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="tzvi" data-description="Support me on Buy me a coffee!" data-message="If this helped you out, consider fueling the site with a coffee!" data-color="#FF5F5F" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
