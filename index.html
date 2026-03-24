@@ -927,73 +927,11 @@
     gap: 0.4rem;
   }
 
-  /* Segments */
-  .segments-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    animation: fadeSlideIn 0.25s ease;
-  }
-  .segment-chip {
-    position: relative;
-    padding: 0.25rem 0.6rem;
-    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
-    font-size: 0.72rem;
-    font-weight: 500;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text-dim);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    white-space: nowrap;
-  }
-  .segment-chip:hover {
-    border-color: var(--accent);
-    color: var(--text);
-  }
-  .segment-chip.active {
-    border-color: var(--accent);
-    background: var(--accent-dim);
-    color: var(--text);
-  }
-  .segment-chip .seg-num {
-    font-weight: 600;
-    color: var(--accent);
-    margin-right: 0.2rem;
-  }
-  .segment-chip.active .seg-num {
-    color: var(--accent);
-  }
-  .seg-remove {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 14px;
-    height: 14px;
-    margin-left: 0.25rem;
-    border: none;
-    background: transparent;
-    color: var(--text-dim);
-    cursor: pointer;
-    font-size: 0.7rem;
-    font-family: inherit;
-    border-radius: 50%;
-    transition: all 0.15s ease;
-    opacity: 0.5;
-    vertical-align: middle;
-  }
-  .seg-remove:hover {
-    opacity: 1;
-    color: var(--danger);
-    background: var(--danger-dim);
-  }
-  .segment-add {
-    padding: 0.25rem 0.6rem;
+  /* Multi-part timer: main screen button */
+  .add-part-btn {
+    padding: 0.35rem 0.9rem;
     font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
-    font-size: 0.68rem;
+    font-size: 0.78rem;
     font-weight: 500;
     border-radius: 8px;
     border: 1px dashed var(--border);
@@ -1003,39 +941,320 @@
     transition: all 0.15s ease;
     white-space: nowrap;
   }
-  .segment-add:hover {
+  .add-part-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    border-style: solid;
+  }
+  .add-part-btn:active { transform: scale(0.96); }
+
+  /* Multi-part timer: editor overlay */
+  .parts-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .parts-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .parts-editor {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.75rem 2rem 1.5rem;
+    max-width: 700px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+    transform: translateY(12px) scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+  .parts-overlay.open .parts-editor {
+    transform: translateY(0) scale(1);
+  }
+  .parts-editor h2 {
+    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    color: var(--text);
+  }
+  .parts-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    padding: 0.5rem 0;
+    scroll-behavior: smooth;
+  }
+  .parts-flow::-webkit-scrollbar { height: 4px; }
+  .parts-flow::-webkit-scrollbar-track { background: transparent; }
+  .parts-flow::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .part-card {
+    flex-shrink: 0;
+    width: 140px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    position: relative;
+  }
+  .part-card-name {
+    width: 100%;
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-align: center;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: var(--text);
+    padding: 0.2rem 0.3rem;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+  .part-card-name::placeholder { color: var(--text-dim); opacity: 0.6; }
+  .part-card-name:focus { border-color: var(--accent); }
+
+  .part-card-time {
+    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    cursor: text;
+    padding: 0.15rem 0.3rem;
+    border-radius: 6px;
+    transition: background 0.15s ease;
+  }
+  .part-card-time:hover { background: var(--surface-hover); }
+
+  .part-card-time-input {
+    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    width: 100%;
+    text-align: center;
+    background: var(--accent-dim);
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 0.15rem 0.3rem;
+    outline: none;
+    -moz-appearance: textfield;
+  }
+  .part-card-time-input::-webkit-outer-spin-button,
+  .part-card-time-input::-webkit-inner-spin-button {
+    -webkit-appearance: none; margin: 0;
+  }
+
+  .part-card-btns {
+    display: flex;
+    gap: 0.3rem;
+  }
+  .part-adj-btn {
+    width: 36px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', system-ui, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    transition: all 0.15s ease;
+  }
+  .part-adj-btn:hover {
     border-color: var(--accent);
     color: var(--accent);
   }
-  .segment-add:active { transform: scale(0.95); }
-  .segments-total {
-    font-size: 0.58rem;
-    font-weight: 500;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    opacity: 0.7;
-    text-align: center;
-    margin-top: -0.25rem;
-  }
-  .section-indicator {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: var(--text-dim);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    height: 1rem;
+  .part-adj-btn:active { transform: scale(0.92); }
+
+  .part-ring-toggle {
     display: flex;
     align-items: center;
-    transition: color 0.3s ease;
+    gap: 0.3rem;
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: color 0.15s ease;
+    border: none;
+    background: none;
+    font-family: 'Outfit', system-ui, sans-serif;
+    padding: 0.15rem 0;
   }
-  .section-indicator.pulse {
-    animation: sectionPulse 0.6s ease;
+  .part-ring-toggle:hover { color: var(--text); }
+  .part-ring-toggle .ring-icon {
+    font-size: 0.85rem;
+    transition: opacity 0.15s ease;
   }
-  @keyframes sectionPulse {
-    0% { transform: scale(1); color: var(--text-dim); }
-    50% { transform: scale(1.15); color: var(--accent); }
-    100% { transform: scale(1); color: var(--text-dim); }
+  .part-ring-toggle.off .ring-icon { opacity: 0.3; }
+
+  .part-remove-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.15s ease;
+  }
+  .part-card:hover .part-remove-btn { opacity: 0.6; }
+  .part-remove-btn:hover { opacity: 1 !important; color: var(--danger); background: var(--danger-dim); }
+
+  .part-arrow {
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    opacity: 0.4;
+    padding: 0 0.4rem;
+  }
+
+  .part-add-card {
+    flex-shrink: 0;
+    width: 80px;
+    height: 140px;
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-dim);
+    font-size: 1.5rem;
+    transition: all 0.15s ease;
+    background: transparent;
+  }
+  .part-add-card:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    border-style: solid;
+  }
+  .part-add-card:active { transform: scale(0.95); }
+
+  .parts-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    gap: 1rem;
+  }
+  .parts-total-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+  }
+  .parts-done-btn {
+    padding: 0.6rem 2rem;
+    font-size: 0.9rem;
+  }
+
+  /* Multi-part timer: running info */
+  .parts-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    animation: fadeSlideIn 0.3s ease;
+  }
+  .part-name-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .parts-dots-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .parts-dots {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .part-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1.5px solid var(--text-dim);
+    background: transparent;
+    transition: all 0.3s ease;
+  }
+  .part-dot.done {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 4px var(--accent-glow);
+  }
+  .part-dot.current {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 6px var(--accent-glow);
+    animation: dotPulse 1.5s ease-in-out infinite;
+  }
+  @keyframes dotPulse {
+    0%, 100% { box-shadow: 0 0 4px var(--accent-glow); }
+    50% { box-shadow: 0 0 10px var(--accent-glow), 0 0 16px var(--accent-glow); }
+  }
+  .parts-label-text {
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+  .parts-remaining {
+    font-family: 'Outfit', system-ui, sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-dim);
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .parts-remaining .sep {
+    opacity: 0.4;
   }
 
   /* Alarm dismiss button */
@@ -1111,7 +1330,7 @@
 <!-- Top bar -->
 <div class="topbar">
   <div class="mode-toggle">
-    <button id="btnTimer" class="active" onclick="setMode('timer')">Countdown</button>
+    <button id="btnTimer" class="active" onclick="setMode('timer')">Timer</button>
     <button id="btnStopwatch" onclick="setMode('stopwatch')">Stopwatch</button>
   </div>
   <div class="settings-area" style="display:flex;gap:0.4rem;">
@@ -1209,12 +1428,8 @@
     </div>
   </div>
 
-  <!-- Segments -->
-  <div class="segments-bar hidden" id="segmentsBar"></div>
-  <div class="segments-total hidden" id="segmentsTotal"></div>
-  <div id="segmentAddRow">
-    <button class="segment-add hidden" id="segmentAddBtn" onclick="addSegment()">+ Add Section</button>
-  </div>
+  <!-- Multi-part -->
+  <button class="add-part-btn hidden" id="addPartBtn" onclick="openPartsEditor()">+ Add Part</button>
 
   <!-- Recent timers -->
   <div class="recents hidden" id="recents">
@@ -1224,7 +1439,14 @@
 
   <!-- Display -->
   <div class="display-area">
-    <div class="section-indicator hidden" id="sectionIndicator"></div>
+    <div class="parts-info hidden" id="partsInfo">
+      <div class="part-name-label" id="partNameLabel"></div>
+      <div class="parts-dots-row">
+        <div class="parts-dots" id="partsDots"></div>
+        <span class="parts-label-text" id="partsLabelText"></span>
+      </div>
+      <div class="parts-remaining" id="partsRemaining"></div>
+    </div>
     <div class="overtime-label" id="overtimeLabel"></div>
     <div class="time-display" id="display">05:00</div>
   </div>
@@ -1301,6 +1523,19 @@
       <h3>Offline</h3>
       <p>This timer works entirely in your browser with no server required. All features (timing, sound, wake lock, PiP) use local browser APIs and will continue working if your internet disconnects.</p>
     </section>
+  </div>
+</div>
+
+<!-- Multi-part editor -->
+<div class="parts-overlay" id="partsOverlay" onclick="if(event.target===this)closePartsEditor()">
+  <div class="parts-editor">
+    <button class="modal-close" onclick="closePartsEditor()">&times;</button>
+    <h2>Multi-Part Timer</h2>
+    <div class="parts-flow" id="partsFlow"></div>
+    <div class="parts-footer">
+      <span class="parts-total-label" id="partsTotalLabel"></span>
+      <button class="btn-start parts-done-btn" onclick="closePartsEditor()">Done</button>
+    </div>
   </div>
 </div>
 
@@ -1502,7 +1737,7 @@ function adjustUnit(unit, delta) {
     if (unit === 'm') setM = Math.max(0, Math.min(59, setM + delta));
     if (unit === 's') setS = Math.max(0, Math.min(59, setS + delta));
     totalSeconds = setH * 3600 + setM * 60 + setS;
-    if (segments.length > 1) segments[selectedSegmentIndex].seconds = totalSeconds;
+    if (segments.length > 1) segments[0].seconds = totalSeconds;
   } else if (state === 'paused' && mode === 'timer') {
     let remaining = totalSeconds - pausedElapsed;
     if (unit === 'h') remaining += delta * 3600;
@@ -1545,7 +1780,7 @@ function editTimeValue(unit, el) {
       if (unit === 'm') setM = val;
       if (unit === 's') setS = val;
       totalSeconds = setH * 3600 + setM * 60 + setS;
-      if (segments.length > 1) segments[selectedSegmentIndex].seconds = totalSeconds;
+      if (segments.length > 1) segments[0].seconds = totalSeconds;
     } else if (state === 'paused') {
       const rem = Math.max(0, totalSeconds - pausedElapsed);
       const rh = Math.floor(rem / 3600);
@@ -1632,30 +1867,18 @@ function updateUI() {
   overtimeLabel.textContent = state === 'overtime' ? 'OVERTIME' : '';
   document.body.classList.toggle('overtime-flash', state === 'overtime');
 
-  // Section indicator
-  const sectionInd = document.getElementById('sectionIndicator');
-  const hasSegments = segments.length > 1;
-  const isActive = state === 'running' || state === 'overtime' || state === 'paused';
-  if (hasSegments && isActive) {
-    sectionInd.classList.remove('hidden');
-    sectionInd.textContent = `Section ${currentSegmentIndex + 1} of ${segments.length}`;
-  } else {
-    sectionInd.classList.add('hidden');
-  }
+  // Multi-part info (running state)
+  updatePartsInfo();
 
-  // Segments bar + add button
-  const segBar = document.getElementById('segmentsBar');
-  const segTotal = document.getElementById('segmentsTotal');
-  const segAddBtn = document.getElementById('segmentAddBtn');
-  const showSegments = mode === 'timer' && state === 'idle';
-  segAddBtn.classList.toggle('hidden', !showSegments);
-  if (showSegments && hasSegments) {
-    segBar.classList.remove('hidden');
-    segTotal.classList.remove('hidden');
-    renderSegments();
-  } else {
-    segBar.classList.add('hidden');
-    segTotal.classList.add('hidden');
+  // Add Part button (idle state)
+  const addPartBtn = document.getElementById('addPartBtn');
+  const showPartBtn = mode === 'timer' && state === 'idle';
+  addPartBtn.classList.toggle('hidden', !showPartBtn);
+  if (showPartBtn) {
+    addPartBtn.textContent = segments.length > 1
+      ? `Edit Parts (${segments.length})`
+      : '+ Add Part';
+    addPartBtn.style.borderStyle = segments.length > 1 ? 'solid' : 'dashed';
   }
 
   updateProgressRing(elapsed);
@@ -1669,7 +1892,7 @@ function startPause() {
     if (mode === 'timer') {
       // Sync current setter to segments if active
       if (segments.length > 1) {
-        segments[selectedSegmentIndex].seconds = setH * 3600 + setM * 60 + setS;
+        segments[0].seconds = setH * 3600 + setM * 60 + setS;
         currentSegmentIndex = 0;
         totalSeconds = segments[0].seconds;
         if (segments.reduce((s, seg) => s + seg.seconds, 0) <= 0) return;
@@ -1711,16 +1934,13 @@ function tick() {
   if (mode === 'timer' && state === 'running' && elapsed >= totalSeconds) {
     // Check if there are more segments to advance to
     if (segments.length > 1 && currentSegmentIndex < segments.length - 1) {
-      // Advance to next segment
+      // Ring for completed part if enabled
+      if (segments[currentSegmentIndex].ring) playChime();
+      // Advance to next part
       pausedElapsed = 0;
       runStartTime = Date.now();
       currentSegmentIndex++;
       totalSeconds = segments[currentSegmentIndex].seconds;
-      // Pulse the section indicator
-      const ind = document.getElementById('sectionIndicator');
-      ind.classList.remove('pulse');
-      void ind.offsetWidth; // force reflow
-      ind.classList.add('pulse');
     } else {
       state = 'overtime';
       playAlarm();
@@ -1790,25 +2010,21 @@ function showToast(msg, type, options) {
   toastTimer = setTimeout(() => { toast.className = 'toast'; }, duration);
 }
 
-// --- Segments ---
-function addSegment() {
+// --- Multi-Part Timer ---
+function openPartsEditor() {
   if (state !== 'idle' || mode !== 'timer') return;
   if (segments.length === 0) {
-    // Initialize first segment from current time setter
     const secs = setH * 3600 + setM * 60 + setS;
-    segments.push({ seconds: secs || 300 });
+    segments.push({ seconds: secs || 300, name: '', ring: true });
+    segments.push({ seconds: 300, name: '', ring: true });
   }
-  segments.push({ seconds: 300 });
-  selectedSegmentIndex = segments.length - 1;
-  loadSegmentIntoSetter(selectedSegmentIndex);
-  updateUI();
+  renderPartsFlow();
+  document.getElementById('partsOverlay').classList.add('open');
 }
 
-function removeSegment(index) {
-  if (state !== 'idle') return;
-  segments.splice(index, 1);
+function closePartsEditor() {
+  document.getElementById('partsOverlay').classList.remove('open');
   if (segments.length <= 1) {
-    // Collapse back to single-timer mode
     if (segments.length === 1) {
       const s = segments[0].seconds;
       setH = Math.floor(s / 3600);
@@ -1817,51 +2033,191 @@ function removeSegment(index) {
       totalSeconds = s;
     }
     segments = [];
-    selectedSegmentIndex = 0;
   } else {
-    if (selectedSegmentIndex >= segments.length) selectedSegmentIndex = segments.length - 1;
-    loadSegmentIntoSetter(selectedSegmentIndex);
+    // Sync first part to main setter
+    const s = segments[0].seconds;
+    setH = Math.floor(s / 3600);
+    setM = Math.floor((s % 3600) / 60);
+    setS = s % 60;
+    totalSeconds = s;
   }
+  selectedSegmentIndex = 0;
   updateUI();
 }
 
-function selectSegment(index) {
-  if (state !== 'idle') return;
-  // Save current setter values to previously selected segment
-  if (segments.length > 1) {
-    segments[selectedSegmentIndex].seconds = setH * 3600 + setM * 60 + setS;
+function addPart() {
+  segments.push({ seconds: 300, name: '', ring: true });
+  renderPartsFlow();
+  // Scroll to end
+  const flow = document.getElementById('partsFlow');
+  setTimeout(() => flow.scrollLeft = flow.scrollWidth, 50);
+}
+
+function removePart(index) {
+  segments.splice(index, 1);
+  if (segments.length <= 1) {
+    closePartsEditor();
+    return;
   }
-  selectedSegmentIndex = index;
-  loadSegmentIntoSetter(index);
-  updateUI();
+  renderPartsFlow();
 }
 
-function loadSegmentIntoSetter(index) {
-  const s = segments[index].seconds;
-  setH = Math.floor(s / 3600);
-  setM = Math.floor((s % 3600) / 60);
-  setS = s % 60;
-  totalSeconds = s;
+function adjustPartTime(index, deltaSec) {
+  segments[index].seconds = Math.max(0, segments[index].seconds + deltaSec);
+  renderPartsFlow();
 }
 
-function renderSegments() {
-  const bar = document.getElementById('segmentsBar');
-  bar.innerHTML = '';
-  segments.forEach((seg, i) => {
-    const chip = document.createElement('button');
-    chip.className = 'segment-chip' + (i === selectedSegmentIndex ? ' active' : '');
-    chip.innerHTML = `<span class="seg-num">${i + 1}</span>${formatTime(seg.seconds)}`;
-    chip.onclick = () => selectSegment(i);
-    const rm = document.createElement('button');
-    rm.className = 'seg-remove';
-    rm.innerHTML = '&times;';
-    rm.onclick = (e) => { e.stopPropagation(); removeSegment(i); };
-    chip.appendChild(rm);
-    bar.appendChild(chip);
+function editPartTime(index, el) {
+  const seg = segments[index];
+  const m = Math.floor(seg.seconds / 60);
+  const s = seg.seconds % 60;
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'part-card-time-input';
+  input.value = `${m}:${String(s).padStart(2, '0')}`;
+  input.setAttribute('inputmode', 'numeric');
+  el.style.display = 'none';
+  el.parentNode.insertBefore(input, el.nextSibling);
+  input.focus();
+  input.select();
+  function commit() {
+    const parts = input.value.split(':').map(Number);
+    let totalSec = 0;
+    if (parts.length === 3) totalSec = (parts[0] || 0) * 3600 + (parts[1] || 0) * 60 + (parts[2] || 0);
+    else if (parts.length === 2) totalSec = (parts[0] || 0) * 60 + (parts[1] || 0);
+    else totalSec = (parts[0] || 0) * 60;
+    segments[index].seconds = Math.max(0, totalSec);
+    input.remove();
+    el.style.display = '';
+    renderPartsFlow();
+  }
+  input.addEventListener('blur', commit);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+    if (e.key === 'Escape') { input.remove(); el.style.display = ''; }
   });
+}
+
+function renderPartsFlow() {
+  const flow = document.getElementById('partsFlow');
+  flow.innerHTML = '';
+  segments.forEach((seg, i) => {
+    if (i > 0) {
+      const arrow = document.createElement('span');
+      arrow.className = 'part-arrow';
+      arrow.textContent = '\u2192';
+      flow.appendChild(arrow);
+    }
+    const card = document.createElement('div');
+    card.className = 'part-card';
+
+    // Remove button
+    if (segments.length > 1) {
+      const rm = document.createElement('button');
+      rm.className = 'part-remove-btn';
+      rm.innerHTML = '&times;';
+      rm.onclick = () => removePart(i);
+      card.appendChild(rm);
+    }
+
+    // Name input
+    const nameInput = document.createElement('input');
+    nameInput.className = 'part-card-name';
+    nameInput.type = 'text';
+    nameInput.placeholder = `Part ${i + 1}`;
+    nameInput.value = seg.name;
+    nameInput.maxLength = 20;
+    nameInput.oninput = () => { seg.name = nameInput.value; };
+    card.appendChild(nameInput);
+
+    // Time display (clickable)
+    const timeEl = document.createElement('div');
+    timeEl.className = 'part-card-time';
+    timeEl.textContent = formatTime(seg.seconds);
+    timeEl.onclick = () => editPartTime(i, timeEl);
+    card.appendChild(timeEl);
+
+    // +/- buttons
+    const btns = document.createElement('div');
+    btns.className = 'part-card-btns';
+    [{ label: '-1m', delta: -60 }, { label: '+1m', delta: 60 }, { label: '+5m', delta: 300 }].forEach(b => {
+      const btn = document.createElement('button');
+      btn.className = 'part-adj-btn';
+      btn.textContent = b.label;
+      btn.onclick = () => adjustPartTime(i, b.delta);
+      btns.appendChild(btn);
+    });
+    card.appendChild(btns);
+
+    // Ring toggle
+    const ringBtn = document.createElement('button');
+    ringBtn.className = 'part-ring-toggle' + (seg.ring ? '' : ' off');
+    ringBtn.innerHTML = `<span class="ring-icon">\uD83D\uDD14</span> ${seg.ring ? 'Ring on' : 'Ring off'}`;
+    ringBtn.onclick = () => {
+      seg.ring = !seg.ring;
+      renderPartsFlow();
+    };
+    card.appendChild(ringBtn);
+
+    flow.appendChild(card);
+  });
+
+  // Add button
+  const addCard = document.createElement('button');
+  addCard.className = 'part-add-card';
+  addCard.textContent = '+';
+  addCard.onclick = addPart;
+  flow.appendChild(addCard);
+
   // Total
   const total = segments.reduce((s, seg) => s + seg.seconds, 0);
-  document.getElementById('segmentsTotal').textContent = `Total: ${formatTime(total)}`;
+  document.getElementById('partsTotalLabel').textContent = `Total: ${formatTime(total)}`;
+}
+
+function updatePartsInfo() {
+  const partsInfo = document.getElementById('partsInfo');
+  const hasSegments = segments.length > 1;
+  const isActive = state === 'running' || state === 'overtime' || state === 'paused';
+
+  if (!hasSegments || !isActive) {
+    partsInfo.classList.add('hidden');
+    return;
+  }
+  partsInfo.classList.remove('hidden');
+
+  // Part name
+  const nameLabel = document.getElementById('partNameLabel');
+  const currentName = segments[currentSegmentIndex]?.name;
+  nameLabel.textContent = currentName || '';
+  nameLabel.style.display = currentName ? '' : 'none';
+
+  // Dots
+  const dotsEl = document.getElementById('partsDots');
+  dotsEl.innerHTML = '';
+  segments.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.className = 'part-dot';
+    if (i < currentSegmentIndex) dot.classList.add('done');
+    else if (i === currentSegmentIndex) dot.classList.add('current');
+    dotsEl.appendChild(dot);
+  });
+
+  // Label
+  document.getElementById('partsLabelText').textContent = `Part ${currentSegmentIndex + 1} of ${segments.length}`;
+
+  // Remaining times
+  const elapsed = getElapsed();
+  const partRemaining = Math.max(0, totalSeconds - elapsed);
+  let totalRemaining = partRemaining;
+  for (let i = currentSegmentIndex + 1; i < segments.length; i++) {
+    totalRemaining += segments[i].seconds;
+  }
+  const rem = document.getElementById('partsRemaining');
+  if (state === 'overtime') {
+    rem.textContent = '';
+  } else {
+    rem.innerHTML = `Part: ${formatTime(partRemaining)} left <span class="sep">\u2502</span> Total: ${formatTime(totalRemaining)} left`;
+  }
 }
 
 // --- Sound mode selector ---
