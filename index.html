@@ -1931,6 +1931,40 @@
   button, .toggle-slider, .part-beep-slider {
     touch-action: manipulation;
   }
+
+  /* First-visit settings hint */
+  .settings-hint {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: var(--accent);
+    color: #09090b;
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.5rem 0.85rem;
+    border-radius: 8px;
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    animation: hintBounce 1s ease-in-out infinite;
+    z-index: 100;
+    pointer-events: none;
+  }
+  .settings-hint::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 12px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid var(--accent);
+  }
+  @keyframes hintBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+  }
 </style>
 </head>
 <body>
@@ -3406,6 +3440,20 @@ if (savedSoundMode && ['off', 'single', 'continuous'].includes(savedSoundMode)) 
 if (localStorage.getItem('timerShowClock') === 'false') {
   showClock = false;
   document.getElementById('toggleClock').checked = false;
+}
+
+// First-visit settings hint
+if (!localStorage.getItem('timerVisited')) {
+  localStorage.setItem('timerVisited', 'true');
+  const hint = document.createElement('div');
+  hint.className = 'settings-hint';
+  hint.textContent = '\u2728 More options in here!';
+  document.querySelector('.settings-area').appendChild(hint);
+  setTimeout(() => {
+    hint.style.transition = 'opacity 0.4s ease';
+    hint.style.opacity = '0';
+    setTimeout(() => hint.remove(), 400);
+  }, 3000);
 }
 
 // Restore theme preference
