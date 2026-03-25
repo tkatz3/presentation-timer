@@ -1338,43 +1338,99 @@
     border-color: var(--accent);
     color: var(--accent);
   }
-  .part-notes-toggle.open {
+  .part-notes-toggle.has-notes {
     opacity: 1;
     border-style: solid;
     border-color: var(--accent);
     color: var(--accent);
   }
-  .part-notes-area {
+
+  /* Notes editor modal */
+  .notes-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .notes-modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .notes-modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 1.5rem 1.75rem;
+    max-width: 500px;
     width: 100%;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+    transform: translateY(12px) scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+  .notes-modal-overlay.open .notes-modal {
+    transform: translateY(0) scale(1);
+  }
+  .notes-modal h3 {
+    font-family: 'Fredoka', 'Nunito', system-ui, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  .notes-modal-textarea {
+    width: 100%;
+    min-height: 160px;
     font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
-    font-size: 0.72rem;
+    font-size: 0.92rem;
     font-weight: 400;
     color: var(--text);
-    background: var(--surface);
+    background: var(--bg);
     border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.35rem 0.4rem;
-    resize: none;
+    border-radius: 10px;
+    padding: 0.75rem 0.85rem;
+    resize: vertical;
     outline: none;
     transition: border-color 0.15s ease;
-    line-height: 1.35;
+    line-height: 1.5;
   }
-  .part-notes-area::placeholder { color: var(--text-dim); opacity: 0.5; }
-  .part-notes-area:focus { border-color: var(--accent); }
+  .notes-modal-textarea::placeholder { color: var(--text-dim); opacity: 0.5; }
+  .notes-modal-textarea:focus { border-color: var(--accent); }
+
+  /* Running notes — notebook on right side */
   .running-notes {
+    position: fixed;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 240px;
+    max-height: 50vh;
+    overflow-y: auto;
     font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     font-weight: 400;
     color: var(--text-dim);
-    text-align: center;
-    padding: 0.3rem 0.8rem;
+    text-align: left;
+    padding: 1rem 1.1rem;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    max-width: 400px;
-    line-height: 1.4;
-    opacity: 0.85;
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    line-height: 1.55;
+    opacity: 0.9;
+    z-index: 50;
     animation: fadeSlideIn 0.3s ease;
+    white-space: pre-wrap;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
   }
 
   /* Multi-part: idle display smaller */
@@ -1634,7 +1690,6 @@
       </div>
       <div class="parts-remaining" id="partsRemaining"></div>
     </div>
-    <div class="running-notes hidden" id="runningNotes"></div>
     <div class="overtime-label" id="overtimeLabel"></div>
     <div class="time-display" id="display">05:00</div>
   </div>
@@ -1714,6 +1769,15 @@
   </div>
 </div>
 
+<!-- Notes editor modal -->
+<div class="notes-modal-overlay" id="notesModal" onclick="if(event.target===this)closeNotesModal()">
+  <div class="notes-modal">
+    <button class="modal-close" onclick="closeNotesModal()">&times;</button>
+    <h3 id="notesModalTitle">Speaker Notes</h3>
+    <textarea class="notes-modal-textarea" id="notesModalTextarea" placeholder="Type your speaker notes here..."></textarea>
+  </div>
+</div>
+
 <!-- Alarm dismiss popup -->
 <div class="alarm-popup" id="alarmBanner" onclick="dismissAlarm()">
   <div class="alarm-icon">
@@ -1722,6 +1786,7 @@
   <span class="alarm-label">Click to silence</span>
 </div>
 
+<div class="running-notes hidden" id="runningNotes"></div>
 <div class="toast" id="toast"></div>
 <canvas id="pipCanvas" width="480" height="240"></canvas>
 <video id="pipVideo" autopictureinpicture muted playsinline style="display:none"></video>
@@ -2314,28 +2379,12 @@ function renderPartsFlow() {
     beepRow.appendChild(toggleWrap);
     card.appendChild(beepRow);
 
-    // Notes toggle + textarea
+    // Notes button (opens modal)
     const notesToggle = document.createElement('button');
-    notesToggle.className = 'part-notes-toggle';
-    notesToggle.textContent = 'Notes';
-    const notesArea = document.createElement('textarea');
-    notesArea.className = 'part-notes-area hidden';
-    notesArea.rows = 2;
-    notesArea.placeholder = 'Speaker notes...';
-    notesArea.value = seg.notes || '';
-    notesArea.oninput = () => { seg.notes = notesArea.value; };
-    if (seg.notes) {
-      notesToggle.classList.add('open');
-      notesArea.classList.remove('hidden');
-    }
-    notesToggle.onclick = () => {
-      const isOpen = !notesArea.classList.contains('hidden');
-      notesArea.classList.toggle('hidden', isOpen);
-      notesToggle.classList.toggle('open', !isOpen);
-      if (!isOpen) setTimeout(() => notesArea.focus(), 50);
-    };
+    notesToggle.className = 'part-notes-toggle' + (seg.notes ? ' has-notes' : '');
+    notesToggle.textContent = seg.notes ? 'Notes \u270E' : 'Notes';
+    notesToggle.onclick = () => openNotesModal(i);
     card.appendChild(notesToggle);
-    card.appendChild(notesArea);
 
     flow.appendChild(card);
   });
@@ -2374,7 +2423,7 @@ function updatePartsInfo() {
   const currentNotes = segments[currentSegmentIndex]?.notes;
   if (runningNotesEl) {
     if (currentNotes && currentNotes.trim()) {
-      runningNotesEl.textContent = currentNotes;
+      runningNotesEl.innerHTML = '<strong style="display:block;margin-bottom:0.3rem;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);opacity:0.8">\u{1F4DD} Notes</strong>' + currentNotes.replace(/\n/g, '<br>');
       runningNotesEl.classList.remove('hidden');
     } else {
       runningNotesEl.classList.add('hidden');
@@ -2408,6 +2457,26 @@ function updatePartsInfo() {
   } else {
     rem.innerHTML = `Part: ${formatTime(partRemaining)} left <span class="sep">\u2502</span> Total: ${formatTime(totalRemaining)} left`;
   }
+}
+
+// --- Notes modal ---
+let editingNotesIndex = -1;
+function openNotesModal(index) {
+  editingNotesIndex = index;
+  const seg = segments[index];
+  const name = seg.name || `Part ${index + 1}`;
+  document.getElementById('notesModalTitle').textContent = `Notes — ${name}`;
+  document.getElementById('notesModalTextarea').value = seg.notes || '';
+  document.getElementById('notesModal').classList.add('open');
+  setTimeout(() => document.getElementById('notesModalTextarea').focus(), 100);
+}
+function closeNotesModal() {
+  if (editingNotesIndex >= 0 && editingNotesIndex < segments.length) {
+    segments[editingNotesIndex].notes = document.getElementById('notesModalTextarea').value;
+  }
+  document.getElementById('notesModal').classList.remove('open');
+  editingNotesIndex = -1;
+  renderPartsFlow();
 }
 
 // --- Sound mode selector ---
@@ -2767,7 +2836,7 @@ function updateProgressRing(elapsed) {
 
 // --- Keyboard ---
 document.addEventListener('keydown', e => {
-  if (e.target.tagName === 'INPUT') return;
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
   if (e.code === 'Space') { e.preventDefault(); startPause(); }
   if (e.code === 'KeyR') resetTimer();
 });
