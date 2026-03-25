@@ -1583,76 +1583,171 @@
     letter-spacing: 0.05em;
   }
 
-  /* DPRK leader cartoon */
+  /* DPRK leader cartoon — KJU style */
   .dprk-leader {
     display: flex;
     justify-content: center;
     margin-bottom: 0.5rem;
   }
-  .dprk-leader-face {
-    width: 70px;
-    height: 80px;
-    background: #f5d0a0;
-    border-radius: 50% 50% 45% 45%;
+  .dprk-leader-head {
     position: relative;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    width: 100px;
+    height: 110px;
   }
+  /* Wide round face with double chin */
+  .dprk-leader-face {
+    width: 90px;
+    height: 95px;
+    background: #f0c890;
+    border-radius: 46% 46% 42% 42%;
+    position: absolute;
+    top: 18px;
+    left: 5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+  /* Double chin fold */
+  .dprk-leader-face::after {
+    content: '';
+    position: absolute;
+    bottom: 12px;
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    background: rgba(180, 140, 90, 0.4);
+    border-radius: 50%;
+  }
+  /* Signature flat-top hair */
   .dprk-leader-hair {
     position: absolute;
-    top: -8px;
-    left: -4px;
-    right: -4px;
-    height: 38px;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 42px;
     background: #1a1a1a;
-    border-radius: 50% 50% 30% 30%;
+    border-radius: 8px 8px 48% 48%;
+    z-index: 2;
+  }
+  /* Flat top edge */
+  .dprk-leader-hair::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 4px;
+    right: 4px;
+    height: 20px;
+    background: #1a1a1a;
+    border-radius: 4px 4px 0 0;
+  }
+  /* Sides of hair - thicker sideburns */
+  .dprk-leader-hair::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: -2px;
+    right: -2px;
+    height: 18px;
+    background: #1a1a1a;
+    border-radius: 0 0 50% 50%;
     z-index: 1;
   }
-  .dprk-leader-eyes {
+  /* Ears */
+  .dprk-leader-ears {
     position: absolute;
-    top: 35px;
+    top: 40px;
+    left: 0;
+    right: 0;
+    z-index: 0;
+  }
+  .dprk-leader-ears::before,
+  .dprk-leader-ears::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 18px;
+    background: #e8bc80;
+    border-radius: 50%;
+    top: 0;
+  }
+  .dprk-leader-ears::before { left: -2px; }
+  .dprk-leader-ears::after { right: -2px; }
+  /* Thick eyebrows */
+  .dprk-leader-brows {
+    position: absolute;
+    top: 40px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 16px;
+    gap: 18px;
+    z-index: 3;
+  }
+  .dprk-leader-brows span {
+    width: 16px;
+    height: 4px;
+    background: #1a1a1a;
+    border-radius: 2px;
+    display: block;
+  }
+  .dprk-leader-brows span:first-child { transform: rotate(4deg); }
+  .dprk-leader-brows span:last-child { transform: rotate(-4deg); }
+  /* Small squinting eyes */
+  .dprk-leader-eyes {
+    position: absolute;
+    top: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    z-index: 3;
   }
   .dprk-leader-eyes span {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 5px;
     background: #1a1a1a;
     border-radius: 50%;
     display: block;
   }
-  .dprk-leader-glasses {
+  /* Wide nose */
+  .dprk-leader-nose {
     position: absolute;
-    top: 30px;
+    top: 56px;
     left: 50%;
     transform: translateX(-50%);
-    width: 46px;
-    height: 18px;
-    border: 2px solid #333;
-    border-radius: 8px;
-    background: rgba(0,0,0,0.05);
-  }
-  .dprk-leader-glasses::before,
-  .dprk-leader-glasses::after {
-    content: '';
-    position: absolute;
-    top: 6px;
-    width: 6px;
-    height: 2px;
-    background: #333;
-  }
-  .dprk-leader-glasses::before { left: -8px; }
-  .dprk-leader-glasses::after { right: -8px; }
-  .dprk-leader-smile {
-    position: absolute;
-    bottom: 16px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 8px;
-    border-bottom: 3px solid #c67a5c;
+    width: 14px;
+    height: 10px;
+    border-bottom: 3px solid #d4a870;
     border-radius: 0 0 50% 50%;
+    z-index: 3;
+  }
+  /* Small pursed mouth */
+  .dprk-leader-mouth {
+    position: absolute;
+    top: 74px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 5px;
+    background: #c08060;
+    border-radius: 2px 2px 8px 8px;
+    z-index: 3;
+  }
+  /* Cheek roundness */
+  .dprk-leader-cheeks {
+    position: absolute;
+    top: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 2;
+  }
+  .dprk-leader-cheeks span {
+    width: 14px;
+    height: 10px;
+    background: rgba(220, 160, 130, 0.3);
+    border-radius: 50%;
+    display: block;
   }
 
   /* Theme celebration: lego bricks */
@@ -3021,12 +3116,15 @@ function showDprkPopup() {
   overlay.className = 'dprk-popup-overlay';
   const popup = document.createElement('div');
   popup.className = 'dprk-popup';
-  popup.innerHTML = '<div class="dprk-leader">'
-    + '<div class="dprk-leader-face">'
+  popup.innerHTML = '<div class="dprk-leader"><div class="dprk-leader-head">'
     + '<div class="dprk-leader-hair"></div>'
+    + '<div class="dprk-leader-ears"></div>'
+    + '<div class="dprk-leader-face"></div>'
+    + '<div class="dprk-leader-brows"><span></span><span></span></div>'
     + '<div class="dprk-leader-eyes"><span></span><span></span></div>'
-    + '<div class="dprk-leader-glasses"></div>'
-    + '<div class="dprk-leader-smile"></div>'
+    + '<div class="dprk-leader-nose"></div>'
+    + '<div class="dprk-leader-cheeks"><span></span><span></span></div>'
+    + '<div class="dprk-leader-mouth"></div>'
     + '</div></div>'
     + '<span class="dprk-star">\u2B50</span>'
     + '<div class="dprk-title">Glorious Leader Approves</div>'
