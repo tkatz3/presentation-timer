@@ -1835,6 +1835,9 @@
     </div>
   </div>
 
+  <!-- Timer notes button -->
+  <button class="add-part-btn hidden" id="timerNotesBtn" onclick="openTimerNotes()" style="border-style:solid">Notes</button>
+
   <!-- Multi-part editor (shown inline when mode=multi and idle) -->
   <div class="parts-editor hidden" id="partsEditor">
     <div class="parts-flow" id="partsFlow"></div>
@@ -2137,9 +2140,9 @@ function updateLocalClock() {
 // --- Mode ---
 function setMode(m) {
   if (state !== 'idle') resetTimer();
+  timerNotes = '';
   if (m !== 'multi') {
     segments = [];
-    selectedSegmentIndex = 0;
     currentSegmentIndex = 0;
     viewingNotesIndex = 0;
     _prevViewingNotesIndex = -1;
@@ -2315,6 +2318,19 @@ function updateUI() {
 
   // Hide recents in multi mode
   if (mode === 'multi') recentsEl.classList.add('hidden');
+
+  // Timer notes button (timer mode idle only)
+  const timerNotesBtn = document.getElementById('timerNotesBtn');
+  timerNotesBtn.classList.toggle('hidden', !(mode === 'timer' && state === 'idle'));
+
+  // Show running notes for timer mode (single timer with notes)
+  const runningNotesEl = document.getElementById('runningNotes');
+  if (mode === 'timer' && timerNotes && timerNotes.trim() && (state === 'running' || state === 'paused' || state === 'overtime')) {
+    runningNotesEl.innerHTML = '<div class="notes-part-content">' + timerNotes.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') + '</div>';
+    runningNotesEl.classList.remove('hidden');
+  } else if (mode !== 'multi') {
+    runningNotesEl.classList.add('hidden');
+  }
 
   updateProgressRing(elapsed);
   updatePipCanvas();
@@ -2721,23 +2737,38 @@ function toggleNotesCollapse() {
 }
 
 // --- Notes modal ---
-let editingNotesIndex = -1;
+let timerNotes = '';
+let editingNotesIndex = -1; // -2 = timer notes, -1 = none, 0+ = segment index
+function openTimerNotes() {
+  editingNotesIndex = -2;
+  document.getElementById('notesModalTitle').textContent = 'Speaker Notes';
+  document.getElementById('notesModalTextarea').value = timerNotes;
+  document.getElementById('notesModal').classList.add('open');
+  setTimeout(() => document.getElementById('notesModalTextarea').focus(), 100);
+}
 function openNotesModal(index) {
   editingNotesIndex = index;
   const seg = segments[index];
   const name = seg.name || `Part ${index + 1}`;
-  document.getElementById('notesModalTitle').textContent = `Notes — ${name}`;
+  document.getElementById('notesModalTitle').textContent = `Notes \u2014 ${name}`;
   document.getElementById('notesModalTextarea').value = seg.notes || '';
   document.getElementById('notesModal').classList.add('open');
   setTimeout(() => document.getElementById('notesModalTextarea').focus(), 100);
 }
 function closeNotesModal() {
-  if (editingNotesIndex >= 0 && editingNotesIndex < segments.length) {
+  if (editingNotesIndex === -2) {
+    timerNotes = document.getElementById('notesModalTextarea').value;
+    updateTimerNotesBtn();
+  } else if (editingNotesIndex >= 0 && editingNotesIndex < segments.length) {
     segments[editingNotesIndex].notes = document.getElementById('notesModalTextarea').value;
   }
   document.getElementById('notesModal').classList.remove('open');
   editingNotesIndex = -1;
-  renderPartsFlow();
+  if (mode === 'multi') renderPartsFlow();
+}
+function updateTimerNotesBtn() {
+  const btn = document.getElementById('timerNotesBtn');
+  btn.textContent = timerNotes ? 'Notes \u270E' : 'Notes';
 }
 
 // --- Sound mode selector ---
