@@ -89,23 +89,23 @@
     --pip-danger: #dc2626;
   }
   body.dprk {
-    --bg: #cc0000;
-    --surface: rgba(139, 0, 0, 0.6);
-    --surface-hover: rgba(160, 0, 0, 0.7);
-    --border: rgba(255, 200, 50, 0.3);
-    --text: #FFD700;
-    --text-dim: rgba(255, 215, 0, 0.65);
-    --accent: #FFD700;
-    --accent-dim: rgba(255, 215, 0, 0.12);
-    --accent-glow: rgba(255, 215, 0, 0.25);
-    --danger: #FFFFFF;
-    --danger-dim: rgba(255, 255, 255, 0.1);
-    --danger-glow: rgba(255, 255, 255, 0.3);
+    --bg: #a80000;
+    --surface: rgba(20, 40, 80, 0.5);
+    --surface-hover: rgba(30, 50, 100, 0.6);
+    --border: rgba(255, 255, 255, 0.2);
+    --text: #FFFFFF;
+    --text-dim: rgba(255, 255, 255, 0.7);
+    --accent: #cd2027;
+    --accent-dim: rgba(205, 32, 39, 0.2);
+    --accent-glow: rgba(205, 32, 39, 0.35);
+    --danger: #FFD700;
+    --danger-dim: rgba(255, 215, 0, 0.1);
+    --danger-glow: rgba(255, 215, 0, 0.3);
     --success: #FFD700;
-    --flash-bg: #8b0000;
-    --pip-bg: #cc0000;
-    --pip-text: #FFD700;
-    --pip-danger: #FFFFFF;
+    --flash-bg: #5c0000;
+    --pip-bg: #a80000;
+    --pip-text: #FFFFFF;
+    --pip-danger: #FFD700;
   }
 
   body {
@@ -175,18 +175,22 @@
   }
 
   body.dprk {
-    background: radial-gradient(ellipse at center, #dd1111 0%, #8b0000 70%, #5c0000 100%);
+    background:
+      linear-gradient(to bottom, #024fa2 0%, #024fa2 8%, transparent 8%, transparent 92%, #024fa2 92%, #024fa2 100%),
+      linear-gradient(to bottom, transparent 6%, #fff 6%, #fff 10%, transparent 10%, transparent 90%, #fff 90%, #fff 94%, transparent 94%),
+      radial-gradient(ellipse at center, #cd2027 0%, #a80000 60%, #7a0000 100%);
   }
   body.dprk::before {
     content: '\2605';
     position: fixed;
-    top: 6%;
+    top: 3%;
     left: 50%;
     transform: translateX(-50%);
-    font-size: clamp(2rem, 5vw, 4rem);
-    color: rgba(255, 215, 0, 0.15);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    color: rgba(255, 255, 255, 0.5);
     pointer-events: none;
     z-index: 0;
+    text-shadow: 0 0 20px rgba(205, 32, 39, 0.6);
   }
   body.dprk::after {
     content: 'LIVE\ALAUGH\ALOVE';
@@ -198,7 +202,7 @@
     font-family: 'Georgia', 'Times New Roman', serif;
     font-size: clamp(3rem, 10vw, 7rem);
     font-weight: 900;
-    color: rgba(255, 215, 0, 0.08);
+    color: rgba(255, 255, 255, 0.06);
     text-transform: uppercase;
     letter-spacing: 0.15em;
     text-align: center;
