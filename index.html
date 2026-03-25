@@ -1836,7 +1836,7 @@
   </div>
 
   <!-- Timer notes button -->
-  <button class="add-part-btn hidden" id="timerNotesBtn" onclick="openTimerNotes()" style="border-style:solid">Notes</button>
+  <button class="btn-secondary hidden" id="timerNotesBtn" onclick="openTimerNotes()" style="padding:0.5rem 1.2rem;font-size:0.85rem;border-radius:10px">&#x1F4DD; Add Notes</button>
 
   <!-- Multi-part editor (shown inline when mode=multi and idle) -->
   <div class="parts-editor hidden" id="partsEditor">
@@ -2768,7 +2768,7 @@ function closeNotesModal() {
 }
 function updateTimerNotesBtn() {
   const btn = document.getElementById('timerNotesBtn');
-  btn.textContent = timerNotes ? 'Notes \u270E' : 'Notes';
+  btn.innerHTML = timerNotes ? '\u{1F4DD} Edit Notes' : '\u{1F4DD} Add Notes';
 }
 
 // --- Sound mode selector ---
