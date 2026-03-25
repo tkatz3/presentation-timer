@@ -2549,15 +2549,19 @@ function spawnConfetti() {
 function showDprkPopup() {
   const overlay = document.createElement('div');
   overlay.className = 'dprk-popup-overlay';
-  overlay.onclick = () => overlay.remove();
   const popup = document.createElement('div');
   popup.className = 'dprk-popup';
   popup.innerHTML = '<span class="dprk-star">\u2B50</span>'
     + '<div class="dprk-title">Glorious Leader Approves</div>'
     + '<div class="dprk-subtitle">Your presentation has exceeded all expectations of the Five-Year Plan.<br>The People\u2019s Committee awards you the Order of the Golden Star \u2605</div>';
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'modal-close';
+  closeBtn.innerHTML = '&times;';
+  closeBtn.onclick = () => overlay.remove();
+  popup.appendChild(closeBtn);
   overlay.appendChild(popup);
   document.body.appendChild(overlay);
-  setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 3000);
+  setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 7000);
 }
 
 function spawnLegoBricks() {
