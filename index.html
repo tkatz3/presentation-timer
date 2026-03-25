@@ -1599,7 +1599,7 @@ function toggleSettings() {
   settingsPanel.classList.toggle('open');
 }
 document.addEventListener('click', e => {
-  if (!settingsPanel.contains(e.target) && !e.target.closest('.settings-btn')) {
+  if (!settingsPanel.contains(e.target) && !e.target.closest('.settings-btn') && !e.target.closest('.settings-panel')) {
     settingsPanel.classList.remove('open');
   }
 });
@@ -1609,6 +1609,8 @@ function setTheme(theme) {
   currentTheme = theme;
   localStorage.setItem('timerTheme', theme);
   updateThemeSelector();
+  // Keep settings open after theme change (re-apply in case stacking context shift closed it)
+  settingsPanel.classList.add('open');
 }
 function updateThemeSelector() {
   document.querySelectorAll('.theme-option').forEach(btn => {
