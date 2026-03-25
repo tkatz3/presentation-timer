@@ -88,6 +88,25 @@
     --pip-text: #2d1b3d;
     --pip-danger: #dc2626;
   }
+  body.lego {
+    --bg: #FFD500;
+    --surface: rgba(255, 255, 255, 0.92);
+    --surface-hover: rgba(255, 255, 255, 0.98);
+    --border: rgba(0, 0, 0, 0.12);
+    --text: #1a1a1a;
+    --text-dim: #555555;
+    --accent: #D11013;
+    --accent-dim: rgba(209, 16, 19, 0.1);
+    --accent-glow: rgba(209, 16, 19, 0.25);
+    --danger: #D11013;
+    --danger-dim: rgba(209, 16, 19, 0.08);
+    --danger-glow: rgba(209, 16, 19, 0.2);
+    --success: #00852B;
+    --flash-bg: #fff0f0;
+    --pip-bg: #FFD500;
+    --pip-text: #1a1a1a;
+    --pip-danger: #D11013;
+  }
   body.dprk {
     --bg: #a80000;
     --surface: rgba(20, 40, 80, 0.5);
@@ -160,6 +179,15 @@
   @keyframes cloudDrift {
     from { transform: translateX(0); }
     to { transform: translateX(calc(100vw + 400px)); }
+  }
+
+  body.lego {
+    background-color: #FFD500;
+    background-image:
+      radial-gradient(circle, rgba(0,0,0,0.06) 28%, transparent 28%),
+      radial-gradient(circle, rgba(255,255,255,0.15) 24%, transparent 24%);
+    background-size: 48px 48px;
+    background-position: 0 0, 2px 2px;
   }
 
   body.pride {
@@ -1340,6 +1368,7 @@
           <button class="theme-option" data-theme="light" onclick="setTheme('light')">Light</button>
           <button class="theme-option" data-theme="sky" onclick="setTheme('sky')">Sky</button>
           <button class="theme-option" data-theme="pride" onclick="setTheme('pride')">Pride</button>
+          <button class="theme-option" data-theme="lego" onclick="setTheme('lego')">Lego</button>
           <button class="theme-option" data-theme="dprk" onclick="setTheme('dprk')">DPRK</button>
         </div>
       </div>
@@ -1608,7 +1637,7 @@ document.addEventListener('click', e => {
   }
 });
 function setTheme(theme) {
-  document.body.classList.remove('light', 'sky', 'pride', 'dprk');
+  document.body.classList.remove('light', 'sky', 'pride', 'lego', 'dprk');
   if (theme !== 'dark') document.body.classList.add(theme);
   currentTheme = theme;
   localStorage.setItem('timerTheme', theme);
@@ -2465,7 +2494,7 @@ if (localStorage.getItem('timerShowClock') === 'false') {
 
 // Restore theme preference
 const savedTheme = localStorage.getItem('timerTheme');
-if (savedTheme && ['dark', 'light', 'sky', 'pride', 'dprk'].includes(savedTheme)) {
+if (savedTheme && ['dark', 'light', 'sky', 'pride', 'lego', 'dprk'].includes(savedTheme)) {
   setTheme(savedTheme);
 }
 </script>
