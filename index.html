@@ -1881,8 +1881,10 @@ function tick() {
   if ((mode === 'timer' || mode === 'multi') && state === 'running' && elapsed >= totalSeconds) {
     // Check if there are more segments to advance to
     if (segments.length > 1 && currentSegmentIndex < segments.length - 1) {
-      // Ring for completed part if enabled
-      if (segments[currentSegmentIndex].ring) playChime();
+      // Beep for completed part if enabled (independent of main sound setting)
+      if (segments[currentSegmentIndex].ring) {
+        try { playChime(); } catch(e) {}
+      }
       // Advance to next part
       pausedElapsed = 0;
       runStartTime = Date.now();
