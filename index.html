@@ -1798,6 +1798,7 @@ let state = 'idle';
 let totalSeconds = 300;
 let runStartTime = 0;
 let pausedElapsed = 0;
+let pausedElapsedMs = 0;
 let intervalId = null;
 let wakeLock = null;
 let autoPip = true;
@@ -1878,6 +1879,12 @@ function getElapsed() {
     return pausedElapsed + Math.floor((Date.now() - runStartTime) / 1000);
   }
   return pausedElapsed;
+}
+function getElapsedMs() {
+  if (state === 'running' || state === 'overtime') {
+    return pausedElapsedMs + (Date.now() - runStartTime);
+  }
+  return pausedElapsedMs;
 }
 
 // --- Format ---
@@ -2105,7 +2112,13 @@ function updateUI() {
       display.textContent = formatTime(Math.max(0, totalSeconds - elapsed));
     }
   } else {
-    display.textContent = formatTime(elapsed);
+    if (mode === 'stopwatch' && state !== 'idle') {
+      const ms = getElapsedMs();
+      const cs = String(Math.floor((ms % 1000) / 10)).padStart(2, '0');
+      display.innerHTML = formatTime(elapsed) + '<span style="font-size:0.4em;opacity:0.5">.' + cs + '</span>';
+    } else {
+      display.textContent = formatTime(elapsed);
+    }
   }
 
   // Styling
@@ -2149,14 +2162,16 @@ function startPause() {
       saveRecent(totalSeconds);
     }
     pausedElapsed = 0;
+    pausedElapsedMs = 0;
     runStartTime = Date.now();
     state = 'running';
     btnStartPause.textContent = 'Pause';
     btnStartPause.className = 'btn-secondary';
-    intervalId = setInterval(tick, 250);
+    intervalId = setInterval(tick, mode === 'stopwatch' ? 50 : 250);
     startPipVideo();
   } else if (state === 'running' || state === 'overtime') {
     pausedElapsed = getElapsed();
+    pausedElapsedMs = getElapsedMs();
     state = 'paused';
     clearInterval(intervalId);
     intervalId = null;
@@ -2167,7 +2182,7 @@ function startPause() {
   } else if (state === 'paused') {
     runStartTime = Date.now();
     state = pausedElapsed >= totalSeconds && (mode === 'timer' || mode === 'multi') ? 'overtime' : 'running';
-    intervalId = setInterval(tick, 250);
+    intervalId = setInterval(tick, mode === 'stopwatch' ? 50 : 250);
     btnStartPause.textContent = 'Pause';
     btnStartPause.className = 'btn-secondary';
   }
@@ -2186,6 +2201,7 @@ function tick() {
       }
       // Advance to next part
       pausedElapsed = 0;
+      pausedElapsedMs = 0;
       runStartTime = Date.now();
       currentSegmentIndex++;
       totalSeconds = segments[currentSegmentIndex].seconds;
@@ -2204,6 +2220,7 @@ function resetTimer() {
   intervalId = null;
   state = 'idle';
   pausedElapsed = 0;
+  pausedElapsedMs = 0;
   runStartTime = 0;
   currentSegmentIndex = 0;
   if (mode === 'timer') {
