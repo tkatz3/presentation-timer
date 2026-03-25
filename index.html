@@ -2107,9 +2107,8 @@ function updatePartsInfo() {
 
   // Part name
   const nameLabel = document.getElementById('partNameLabel');
-  const currentName = segments[currentSegmentIndex]?.name;
-  nameLabel.textContent = currentName || '';
-  nameLabel.style.display = currentName ? '' : 'none';
+  const currentName = segments[currentSegmentIndex]?.name || `Part ${currentSegmentIndex + 1}`;
+  nameLabel.textContent = currentName;
 
   // Dots
   const dotsEl = document.getElementById('partsDots');
