@@ -2594,7 +2594,7 @@ function renderPartsFlow() {
     // Notes button (opens modal)
     const notesToggle = document.createElement('button');
     notesToggle.className = 'part-notes-toggle' + (seg.notes ? ' has-notes' : '');
-    notesToggle.textContent = seg.notes ? 'Notes \u270E' : 'Notes';
+    notesToggle.textContent = seg.notes ? '\u{1F4DD} Edit Notes' : '\u{1F4DD} Add Notes';
     notesToggle.onclick = () => openNotesModal(i);
     card.appendChild(notesToggle);
 
